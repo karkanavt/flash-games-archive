@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архив старых Flash-игр</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'VT323', 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.performance-mode {
+            background-color: #000 !important;
+        }
+
+        button, .filter-btn, .sort-btn, .page-btn, .game-card button, .close-btn, .fullscreen-btn, .restart-btn, .case-btn, .wheel-btn {
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 16px;
+        }
+
+        h1, h2, h3, .case-title, .wheel-title {
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+        }
+
+        .subtitle {
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+        }
+
+        .game-card h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            display: block;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.performance-mode .video-background {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .site-content {
+            transition: opacity 0.4s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .site-content.fade-out-site {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Анимация растворения карточки */
+        .game-card.anim-dissolve {
+            animation: dissolveAnimation 0.6s cubic-bezier(0.2, 0.9, 0.4, 1) forwards !important;
+            position: fixed !important;
+            z-index: 2000 !important;
+        }
+        
+        @keyframes dissolveAnimation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                filter: blur(0px);
+            }
+            30% {
+                transform: scale(0.95);
+                opacity: 0.7;
+                filter: blur(2px);
+            }
+            60% {
+                transform: scale(0.7);
+                opacity: 0.3;
+                filter: blur(6px);
+            }
+            100% {
+                transform: scale(0.3);
+                opacity: 0;
+                filter: blur(12px);
+                visibility: hidden;
+            }
+        }
+        
+        body.performance-mode .game-card.anim-dissolve {
+            animation: none !important;
+        }
+
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+
+        #game-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #game-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+        }
+
+        .player-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1001;
+            transition: opacity 0.2s ease;
+            transform: translateY(-100%);
+            animation: slideDownBar 0.4s ease-out forwards;
+        }
+        
+        @keyframes slideDownBar {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        body.performance-mode .player-bar {
+            backdrop-filter: none;
+        }
+
+        #game-container.fullscreen .player-bar {
+            opacity: 0;
+        }
+
+        #game-container.fullscreen .player-bar:hover {
+            opacity: 1;
+        }
+
+        .player-bar span {
+            color: white;
+            font-size: 15px;
+            font-family: 'VT323', monospace;
+        }
+
+        .close-btn, .fullscreen-btn, .restart-btn {
+            background: rgba(85, 85, 85, 0.8);
+            backdrop-filter: blur(4px);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s ease;
+            margin-left: 10px;
+            font-family: 'VT323', monospace;
+        }
+        
+        body.performance-mode .close-btn,
+        body.performance-mode .fullscreen-btn,
+        body.performance-mode .restart-btn {
+            backdrop-filter: none;
+            transition: none;
+        }
+
+        .close-btn:hover, .fullscreen-btn:hover, .restart-btn:hover {
+            background: rgba(119, 119, 119, 0.9);
+        }
+        
+        body.performance-mode .close-btn:hover,
+        body.performance-mode .fullscreen-btn:hover,
+        body.performance-mode .restart-btn:hover {
+            transform: none;
+        }
+
+        .restart-btn {
+            background: rgba(139,0,0,0.7);
+        }
+
+        .restart-btn:hover {
+            background: rgba(90,0,0,0.9);
+        }
+
+        .player-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        #ruffle-player {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInPlayer 0.6s ease-out 0.2s forwards;
+        }
+        
+        @keyframes fadeInPlayer {
+            0% {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #ruffle-player canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: rgba(139,0,0,0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: monospace;
+        }
+        
+        body.performance-mode .scroll-top-btn {
+            backdrop-filter: none;
+            transition: none;
+        }
+
+        .scroll-top-btn:hover {
+            background: rgba(90,0,0,0.9);
+            transform: scale(1.05);
+        }
+        
+        body.performance-mode .scroll-top-btn:hover {
+            transform: none;
+        }
+
+        .scroll-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .random-game-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 45px;
+            height: 45px;
+            background: rgba(139,0,0,0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: monospace;
+        }
+        
+        body.performance-mode .random-game-btn {
+            backdrop-filter: none;
+            transition: none;
+        }
+
+        .random-game-btn:hover {
+            background: rgba(90,0,0,0.9);
+            transform: scale(1.05);
+        }
+        
+        body.performance-mode .random-game-btn:hover {
+            transform: none;
+        }
+
+        .wheel-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .wheel-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        body.performance-mode .wheel-modal {
+            backdrop-filter: none;
+        }
+
+        .wheel-container {
+            background: rgba(30, 30, 35, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            padding: 20px;
+            width: 550px;
+            height: 550px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .wheel-container.transforming {
+            border-radius: 20px;
+            width: 380px;
+            height: auto;
+            background: rgba(30, 30, 35, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .wheel-container.transforming canvas {
+            opacity: 0;
+            visibility: hidden;
+            width: 0;
+            height: 0;
+        }
+        
+        .wheel-container.transforming .wheel-pointer {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .wheel-container.transforming .wheel-title {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .wheel-container.transforming .result-card-preview {
+            display: block !important;
+            animation: cardReveal 0.4s ease-out forwards;
+        }
+        
+        .result-card-preview {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .result-card-preview img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #8B0000;
+        }
+        
+        .result-card-preview h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-family: 'Press Start 2P', monospace;
+        }
+        
+        .result-card-preview p {
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            margin-bottom: 20px;
+            font-family: 'VT323', monospace;
+        }
+        
+        .result-card-preview button {
+            background: #8B0000;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            font-family: 'VT323', monospace;
+        }
+        
+        .result-card-preview button:hover {
+            background: #5a0000;
+            transform: scale(1.02);
+        }
+        
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        body.performance-mode .wheel-container.transforming {
+            transition: none;
+        }
+        
+        body.performance-mode .result-card-preview {
+            animation: none;
+        }
+
+        .wheel-title {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5), 0 0 0 3px rgba(100,100,110,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #888;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .wheel-pointer::after {
+            content: '▼';
+            position: absolute;
+            top: -33px;
+            left: -7px;
+            color: white;
+            font-size: 12px;
+            text-shadow: 0 0 3px black;
+        }
+
+        .spin-center-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(80, 80, 90, 0.9);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        
+        body.performance-mode .spin-center-btn {
+            transition: none;
+        }
+
+        .spin-center-btn:hover {
+            background: rgba(100, 100, 110, 0.9);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        
+        body.performance-mode .spin-center-btn:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .spin-center-btn:active {
+            transform: translate(-50%, -50%) scale(0.98);
+        }
+        
+        .spin-center-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .close-wheel-btn {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(50, 50, 55, 0.8);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            font-family: 'VT323', monospace;
+        }
+        
+        body.performance-mode .close-wheel-btn {
+            transition: none;
+        }
+
+        .close-wheel-btn:hover {
+            background: rgba(70, 70, 75, 0.9);
+            transform: translateX(-50%) scale(1.02);
+        }
+        
+        body.performance-mode .close-wheel-btn:hover {
+            transform: translateX(-50%) scale(1.02);
+        }
+
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-indicator.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            width: 35px;
+            height: 35px;
+            border: 3px solid #333;
+            border-top-color: #8B0000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Остальные стили (фильтры, карточки и т.д.) такие же как раньше */
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .header {
+            background: rgba(13, 13, 13, 0.85);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        body.performance-mode .header {
+            backdrop-filter: none;
+            background: rgba(13, 13, 13, 0.95);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            color: white;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .ascii-art {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-family: monospace;
+            font-size: 8px;
+            color: rgba(139,0,0,0.7);
+            white-space: pre;
+            text-align: left;
+            line-height: 1.2;
+            z-index: 10;
+            cursor: default;
+        }
+
+        .stats-btn {
+            position: absolute;
+            top: 20px;
+            left: 150px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+        
+        .stats-btn:hover {
+            background: rgba(139,0,0,0.6);
+            transform: scale(1.05);
+        }
+        
+        .stats-tooltip {
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background: rgba(20, 20, 25, 0.98);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 12px 15px;
+            min-width: 200px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            font-family: 'VT323', monospace;
+            pointer-events: none;
+        }
+        
+        .stats-btn:hover .stats-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .stats-tooltip p {
+            color: white;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        
+        .stats-tooltip .total-time {
+            color: #8B0000;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        body.performance-mode .stats-btn {
+            backdrop-filter: none;
+        }
+        
+        body.performance-mode .stats-tooltip {
+            backdrop-filter: none;
+        }
+
+        .performance-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+        
+        .performance-toggle label {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'VT323', monospace;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: rgba(80,80,90,0.8);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 1px;
+            left: 2px;
+            transition: transform 0.2s ease;
+        }
+        
+        .toggle-switch.active {
+            background: rgba(139,0,0,0.7);
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(19px);
+        }
+
+        .main-container {
+            display: flex;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filters-sidebar {
+            width: 260px;
+            flex-shrink: 0;
+        }
+
+        .filters-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .filter-btn {
+            display: block;
+            width: 100%;
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateX(3px);
+        }
+        
+        body.performance-mode .filter-btn:hover {
+            transform: none;
+        }
+
+        .filter-btn.active {
+            background: rgba(139,0,0,0.5);
+            border-color: #8B0000;
+        }
+
+        .favorites-section, .last-played-section {
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        
+        body.performance-mode .favorites-section,
+        body.performance-mode .last-played-section {
+            backdrop-filter: none;
+        }
+        
+        .favorites-section h4, .last-played-section h4 {
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .favorites-list, .last-played-list {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .favorites-list::-webkit-scrollbar,
+        .last-played-list::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        
+        .favorites-list, .last-played-list {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .favorite-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(30,30,35,0.8);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .favorite-item:hover {
+            background: rgba(50,50,55,0.9);
+            transform: translateX(3px);
+        }
+        
+        .favorite-item img {
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .favorite-item span {
+            color: white;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .favorite-item .remove-fav {
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .favorite-item .remove-fav:hover {
+            transform: scale(1.2);
+            color: #ff8888;
+        }
+        
+        .last-played-item {
+            background: rgba(139,0,0,0.3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(139,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .last-played-item:hover {
+            background: rgba(139,0,0,0.5);
+            transform: scale(1.02);
+        }
+        
+        .last-played-item img {
+            width: 50px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .last-played-item .last-played-info {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .last-played-item .last-played-name {
+            color: white;
+            font-size: 13px;
+            font-family: 'Press Start 2P', monospace;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .last-played-item .last-played-date {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .history-toggle-btn {
+            background: rgba(80,80,90,0.6);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .history-toggle-btn:hover {
+            background: rgba(100,100,110,0.8);
+            transform: scale(1.05);
+        }
+        
+        .history-list {
+            margin-top: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .history-list.show {
+            max-height: 300px;
+        }
+        
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(30,30,35,0.8);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .history-item:hover {
+            background: rgba(50,50,55,0.9);
+            transform: translateX(3px);
+        }
+        
+        .history-item img {
+            width: 35px;
+            height: 25px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .history-item span {
+            color: white;
+            font-size: 12px;
+            flex: 1;
+        }
+        
+        .history-item small {
+            color: rgba(255,255,255,0.5);
+            font-size: 9px;
+        }
+        
+        .no-items {
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+        }
+
+        .grid-control {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .grid-slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
+            padding: 8px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        body.performance-mode .grid-slider-container {
+            backdrop-filter: none;
+        }
+        
+        .grid-slider-label {
+            color: white;
+            font-size: 12px;
+        }
+        
+        .grid-slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #555, #888, #555);
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .grid-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #888;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .sort-section {
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .sort-btn {
+            width: 100%;
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .sort-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+        }
+        
+        body.performance-mode .sort-btn:hover {
+            transform: none;
+        }
+
+        .sort-dropdown {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 25, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            margin-bottom: 5px;
+            max-height: 0;
+            overflow: hidden;
+            z-index: 200;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: max-height 0.2s ease;
+        }
+
+        .sort-dropdown.show {
+            max-height: 300px;
+        }
+        
+        body.performance-mode .sort-dropdown {
+            backdrop-filter: none;
+        }
+
+        .sort-dropdown-item {
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+        }
+
+        .sort-dropdown-item:hover {
+            background: #8B0000;
+        }
+        
+        body.performance-mode .sort-dropdown-item:hover {
+            transform: none;
+        }
+
+        .search-section {
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: 'VT323', monospace;
+        }
+
+        .search-input:focus {
+            border-color: #888;
+            background: rgba(40,40,40,0.8);
+            transform: scale(1.01);
+        }
+        
+        body.performance-mode .search-input:focus {
+            transform: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 25, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 200;
+            display: none;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .search-dropdown.show {
+            display: block;
+        }
+        
+        body.performance-mode .search-dropdown {
+            backdrop-filter: none;
+        }
+
+        .search-dropdown-item {
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+        }
+
+        .search-dropdown-item:hover {
+            background: #8B0000;
+        }
+        
+        body.performance-mode .search-dropdown-item:hover {
+            transform: none;
+        }
+
+        .game-count {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .games-grid {
+            flex: 1;
+            display: grid;
+            gap: 25px;
+            align-items: start;
+            position: relative;
+            min-height: 400px;
+            transition: all 0.2s ease;
+        }
+        
+        .games-grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .games-grid.cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .games-grid.cols-5 {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .game-card {
+            background: rgba(30, 30, 35, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            transform: scale(1);
+            order: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            will-change: transform;
+            cursor: pointer;
+        }
+        
+        body.performance-mode .game-card {
+            backdrop-filter: none;
+            transition: none;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(80, 80, 90, 0.85);
+            border: none;
+            color: #aaa;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 25;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .game-card:hover .favorite-btn {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .favorite-btn:hover {
+            transform: scale(1.1);
+            background: rgba(100, 100, 110, 0.95);
+        }
+        
+        .favorite-btn.active {
+            color: #ff4444;
+            background: rgba(139,0,0,0.7);
+        }
+        
+        body.performance-mode .favorite-btn {
+            transition: none;
+        }
+
+        .game-card.has-parts::before {
+            content: '📀';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            background: rgba(139,0,0,0.6);
+            backdrop-filter: blur(4px);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 15;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+            box-shadow: 0 0 5px rgba(139,0,0,0.5);
+        }
+        
+        body.performance-mode .game-card.has-parts::before {
+            backdrop-filter: none;
+        }
+
+        .game-card.has-parts:hover::before {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        body.performance-mode .game-card.has-parts:hover::before {
+            opacity: 0;
+            transform: none;
+        }
+
+        .game-card h3 {
+            margin: 12px 0 5px;
+            font-size: 14px;
+            color: white;
+            flex-shrink: 0;
+            font-weight: 600;
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        .game-card.hiding {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .game-card.appearing {
+            animation: cardAppear 0.2s ease forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        body.performance-mode .game-card.appearing {
+            animation: none;
+            opacity: 1;
+        }
+
+        .game-card:hover {
+            transform: scale(1.02);
+            background: rgba(50, 50, 55, 0.85);
+            z-index: 100;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        body.performance-mode .game-card:hover {
+            transform: none;
+        }
+
+        .game-card .image-container {
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            flex-shrink: 0;
+            height: 200px;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+            pointer-events: none;
+        }
+        
+        body.performance-mode .game-card img {
+            transition: none;
+        }
+
+        .game-card:hover img {
+            transform: scale(1.03);
+        }
+        
+        body.performance-mode .game-card:hover img {
+            transform: none;
+        }
+
+        .game-info {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 25, 0.98);
+            border-radius: 10px;
+            padding: 0;
+            font-size: 12px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 101;
+            margin-top: 5px;
+            max-height: 260px;
+            overflow-y: auto;
+            pointer-events: none;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: none;
+        }
+        
+        body.performance-mode .game-info {
+            transition: none;
+        }
+
+        .game-card:hover .game-info {
+            opacity: 1;
+            visibility: visible;
+            padding: 10px;
+            transform: translateY(5px);
+        }
+        
+        body.performance-mode .game-card:hover .game-info {
+            transform: none;
+        }
+
+        .game-info p {
+            margin: 5px 0;
+            color: #ddd;
+            line-height: 1.4;
+            font-size: 12px;
+            font-family: 'VT323', monospace;
+        }
+
+        .game-info .genre {
+            color: #8B0000;
+            font-weight: bold;
+        }
+
+        .game-card button {
+            background: rgba(85, 85, 85, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s ease;
+            margin-top: 10px;
+            font-family: 'VT323', monospace;
+        }
+        
+        body.performance-mode .game-card button {
+            backdrop-filter: none;
+            transition: none;
+        }
+
+        .game-card button:hover {
+            background: rgba(119, 119, 119, 0.9);
+        }
+        
+        body.performance-mode .game-card button:hover {
+            background: rgba(119, 119, 119, 0.9);
+        }
+
+        .game-card.has-parts {
+            position: relative;
+            overflow: visible;
+        }
+        
+        .game-parts-menu {
+            position: absolute;
+            right: -150px;
+            top: 0;
+            width: 140px;
+            background: rgba(30, 30, 35, 0.98);
+            border-radius: 12px;
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 200;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            pointer-events: none;
+            backdrop-filter: none;
+        }
+        
+        body.performance-mode .game-parts-menu {
+            transition: none;
+        }
+        
+        .game-card.has-parts::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 0;
+            width: 30px;
+            height: 100%;
+            background: transparent;
+            z-index: 199;
+            pointer-events: auto;
+        }
+        
+        .game-card.has-parts:hover .game-parts-menu {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        .game-parts-menu h4 {
+            color: rgba(255,255,255,0.9);
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Press Start 2P', monospace;
+        }
+        
+        .game-part-item {
+            padding: 6px 10px;
+            color: rgba(255,255,255,0.9);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 12px;
+            background: rgba(60, 60, 65, 0.7);
+            font-family: 'VT323', monospace;
+        }
+        
+        .game-part-item:hover {
+            background: rgba(139,0,0,0.7);
+            color: white;
+        }
+        
+        body.performance-mode .game-part-item:hover {
+            transform: none;
+        }
+        
+        .game-part-item.active {
+            background: rgba(139,0,0,0.5);
+            border: 1px solid #8B0000;
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+        
+        .page-btn {
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            font-family: 'VT323', monospace;
+        }
+        
+        body.performance-mode .page-btn {
+            backdrop-filter: none;
+            transition: none;
+        }
+
+        .page-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        body.performance-mode .page-btn:hover {
+            transform: none;
+        }
+        
+        .page-btn.active {
+            background: rgba(139,0,0,0.6);
+            border-color: #8B0000;
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .filters-sidebar {
+                width: 100%;
+            }
+            .filter-btn {
+                display: inline-block;
+                width: auto;
+                margin-right: 8px;
+                margin-bottom: 8px;
+            }
+            .sort-btn {
+                display: inline-block;
+                width: auto;
+                margin-right: 8px;
+            }
+            .sort-dropdown {
+                bottom: auto;
+                top: 100%;
+                margin-top: 5px;
+                margin-bottom: 0;
+            }
+            .stats-btn {
+                top: auto;
+                left: auto;
+                bottom: 20px;
+                right: 20px;
+                position: fixed;
+                z-index: 100;
+            }
+            .stats-tooltip {
+                top: auto;
+                bottom: 45px;
+                left: auto;
+                right: 0;
+            }
+            .performance-toggle {
+                position: static;
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+            .header {
+                text-align: center;
+            }
+            .ascii-art {
+                display: none;
+            }
+            .game-card {
+                height: auto;
+                min-height: 360px;
+            }
+            .game-card:hover .game-info {
+                position: relative;
+                top: auto;
+                margin-top: 10px;
+                margin-bottom: 0;
+            }
+            .game-parts-menu {
+                position: fixed;
+                top: auto;
+                bottom: 100%;
+                right: auto;
+                left: 0;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .game-card.has-parts:hover .game-parts-menu {
+                transform: translateY(-10px);
+            }
+            .scroll-top-btn, .random-game-btn {
+                bottom: 20px;
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+            .scroll-top-btn {
+                right: 20px;
+            }
+            .random-game-btn {
+                left: 20px;
+                font-size: 20px;
+            }
+            .game-card.has-parts::before {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+                top: 8px;
+                right: 8px;
+            }
+            .favorite-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+                top: 8px;
+                left: 8px;
+            }
+            .favorites-section, .last-played-section {
+                display: inline-block;
+                width: calc(50% - 10px);
+                margin-right: 10px;
+                vertical-align: top;
+            }
+            .filters-sidebar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            .filters-sidebar > * {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<video class="video-background" autoplay muted loop playsinline>
+    <source src="prewiew/background.mp4" type="video/mp4">
+    Ваш браузер не поддерживает видео.
+</video>
+
+<div class="site-content" id="siteContent">
+    <div class="header">
+        <h1>📀 Архив старых Flash-игр</h1>
+        <div class="subtitle">🎮 Старые игры никогда не умрут — они просто перезагружаются 🎮</div>
+        <div class="performance-toggle">
+            <label>⚡ БЫСТРЫЙ РЕЖИМ</label>
+            <div class="toggle-switch" id="performanceToggle"></div>
+        </div>
+    </div>
+
+    <div id="asciiArt" class="ascii-art"></div>
+    <button class="stats-btn" id="statsBtn">
+        ⏱️
+        <div class="stats-tooltip" id="statsTooltip">
+            <p>⏱️ ОБЩЕЕ ВРЕМЯ</p>
+            <p class="total-time" id="totalTimeDisplay">0ч 0м</p>
+            <p>на сайте</p>
+        </div>
+    </button>
+
+    <div class="main-container">
+        <div class="filters-sidebar">
+            <h3>🎮 Жанры</h3>
+            <button class="filter-btn active" data-genre="all">📋 Все игры</button>
+            <button class="filter-btn" data-genre="Симуляторы">👤 Симуляторы</button>
+            <button class="filter-btn" data-genre="Экшн">⚔️ Экшн / Шутер</button>
+            <button class="filter-btn" data-genre="Аркада">🍦 Аркада</button>
+            <button class="filter-btn" data-genre="Головоломка">💧 Головоломка</button>
+            <button class="filter-btn" data-genre="На двоих">👥 На двоих</button>
+            <button class="filter-btn" data-genre="Серии игр">📀 Серии игр</button>
+            
+            <div class="favorites-section">
+                <h4>❤️ ИЗБРАННОЕ</h4>
+                <div class="favorites-list" id="favoritesList">
+                    <div class="no-items">Нет избранных игр</div>
+                </div>
+            </div>
+            
+            <div class="last-played-section">
+                <h4>🎮 ПОСЛЕДНЯЯ ИГРА</h4>
+                <div class="last-played-list" id="lastPlayedList">
+                    <div class="no-items">Ещё не играли</div>
+                </div>
+                <div class="history-toggle-btn" id="historyToggleBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="no-items">Нет истории</div>
+                </div>
+            </div>
+            
+            <div class="grid-control">
+                <div class="grid-slider-container">
+                    <span class="grid-slider-label">📐 3</span>
+                    <input type="range" id="gridSlider" class="grid-slider" min="3" max="5" step="1" value="4">
+                    <span class="grid-slider-label">5 📐</span>
+                    <span class="grid-value" id="gridValue">4 колонки</span>
+                </div>
+            </div>
+            
+            <div class="sort-section">
+                <button class="sort-btn" id="sortBtn">📊 Сортировка ▼</button>
+                <div class="sort-dropdown" id="sortDropdown">
+                    <div class="sort-dropdown-item" data-sort="default">🔄 По умолчанию (случайно)</div>
+                    <div class="sort-dropdown-item" data-sort="name-asc">🔤 По названию (А-Я)</div>
+                    <div class="sort-dropdown-item" data-sort="name-desc">🔤 По названию (Я-А)</div>
+                    <div class="sort-dropdown-item" data-sort="rating">⭐ По популярности (рейтинг)</div>
+                    <div class="sort-dropdown-item" data-sort="year-asc">📅 По году (старые сначала)</div>
+                    <div class="sort-dropdown-item" data-sort="year-desc">📅 По году (новые сначала)</div>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск игр...">
+                <div id="searchDropdown" class="search-dropdown"></div>
+                <div id="gameCount" class="game-count">Всего игр: 17</div>
+            </div>
+        </div>
+
+        <div class="games-grid cols-4" id="gamesGrid"></div>
+    </div>
+    
+    <div class="pagination" id="pagination"></div>
+</div>
+
+<div id="game-container">
+    <div class="player-bar">
+        <span id="gameTitle">🎮 Игра</span>
+        <div class="player-buttons">
+            <button class="restart-btn" id="restartBtn">⟳ Перезапустить</button>
+            <button class="fullscreen-btn" id="fullscreenBtn">⛶ Полный экран</button>
+            <button class="close-btn">✕ Закрыть</button>
+        </div>
+    </div>
+    <div id="ruffle-player"></div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn">↑</button>
+<button class="random-game-btn" id="randomGameBtn">🎲</button>
+
+<div id="wheelModal" class="wheel-modal">
+    <div class="wheel-container" id="wheelContainer">
+        <div class="wheel-title">🎡 SPIN THE WHEEL 🎡</div>
+        <div class="wheel-wrapper">
+            <canvas id="wheelCanvas" width="450" height="450"></canvas>
+            <div class="wheel-pointer"></div>
+            <div class="spin-center-btn" id="spinWheelBtn">
+                <svg viewBox="0 0 24 24" width="30" height="30">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v6h-2zm0 8h2v2h-2z" fill="white"/>
+                </svg>
+            </div>
+        </div>
+        <div class="result-card-preview" id="resultPreview"></div>
+        <button class="close-wheel-btn" id="closeWheelBtn">✕ ЗАКРЫТЬ</button>
+    </div>
+</div>
+
+<div id="loadingIndicator" class="loading-indicator">
+    <div class="loading-spinner"></div>
+    <div>Загрузка игры...</div>
+</div>
+
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+<script>
+    (function() {
+        let ruffleInstance = null;
+        let ruffleReady = false;
+        let gameTimerInterval = null;
+        let gameStartTime = null;
+        let currentGamePlayId = null;
+        
+        let gamePlayTimes = JSON.parse(localStorage.getItem('gamePlayTimes') || '{}');
+        let gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+        
+        let totalSiteTime = parseInt(localStorage.getItem('totalSiteTime') || '0');
+        let siteTimerInterval = null;
+        
+        function formatTotalTime(seconds) {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            if (hrs > 0) return `${hrs}ч ${mins}м`;
+            return `${mins}м`;
+        }
+        
+        function updateTotalTimeDisplay() {
+            const display = document.getElementById('totalTimeDisplay');
+            if (display) {
+                display.textContent = formatTotalTime(totalSiteTime);
+            }
+        }
+        
+        function startSiteTimer() {
+            let siteStartTime = Date.now();
+            let lastSavedTime = totalSiteTime;
+            
+            siteTimerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - siteStartTime) / 1000);
+                totalSiteTime = lastSavedTime + elapsed;
+                updateTotalTimeDisplay();
+            }, 1000);
+            
+            window.addEventListener('beforeunload', () => {
+                const finalElapsed = Math.floor((Date.now() - siteStartTime) / 1000);
+                totalSiteTime = lastSavedTime + finalElapsed;
+                localStorage.setItem('totalSiteTime', totalSiteTime);
+            });
+        }
+        
+        function saveSiteTimeOnClose() {
+            localStorage.setItem('totalSiteTime', totalSiteTime);
+        }
+        
+        window.addEventListener('beforeunload', saveSiteTimeOnClose);
+        
+        function saveGameTime(gameId, seconds) {
+            if (!gamePlayTimes[gameId]) {
+                gamePlayTimes[gameId] = 0;
+            }
+            gamePlayTimes[gameId] += seconds;
+            localStorage.setItem('gamePlayTimes', JSON.stringify(gamePlayTimes));
+        }
+        
+        function formatTime(seconds) {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            if (hrs > 0) return `${hrs}ч ${mins}м`;
+            if (mins > 0) return `${mins}м ${secs}с`;
+            return `${secs}с`;
+        }
+        
+        function addToHistory(gameId, gameName, gameBg, gamePath, partName) {
+            const displayName = partName || gameName;
+            gameHistory = gameHistory.filter(h => h.gameId !== gameId);
+            gameHistory.unshift({ gameId, gameName: displayName, bg: gameBg, game: gamePath, date: new Date().toLocaleString() });
+            if (gameHistory.length > 5) gameHistory.pop();
+            localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+            updateHistoryUI();
+        }
+        
+        function updateHistoryUI() {
+            const container = document.getElementById('historyList');
+            if (!container) return;
+            if (gameHistory.length === 0) {
+                container.innerHTML = '<div class="no-items">Нет истории</div>';
+                return;
+            }
+            container.innerHTML = gameHistory.map(item => `
+                <div class="history-item" data-game-path="${item.game}" data-game-name="${item.gameName}">
+                    <img src="${item.bg}" alt="${item.gameName}" onerror="this.src='prewiew/placeholder.jpg'">
+                    <span>${item.gameName}</span>
+                    <small>${item.date}</small>
+                </div>
+            `).join('');
+            document.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const gamePath = item.getAttribute('data-game-path');
+                    const gameName = item.getAttribute('data-game-name');
+                    if (gamePath && gameName) playGame(gamePath, gameName);
+                });
+            });
+        }
+        
+        function initRuffle() {
+            if (ruffleReady) return Promise.resolve(ruffleInstance);
+            return new Promise((resolve) => {
+                if (window.RufflePlayer && window.RufflePlayer.newest) {
+                    ruffleInstance = window.RufflePlayer.newest();
+                    ruffleReady = true;
+                    resolve(ruffleInstance);
+                } else {
+                    const checkInterval = setInterval(() => {
+                        if (window.RufflePlayer && window.RufflePlayer.newest) {
+                            clearInterval(checkInterval);
+                            ruffleInstance = window.RufflePlayer.newest();
+                            ruffleReady = true;
+                            resolve(ruffleInstance);
+                        }
+                    }, 50);
+                    setTimeout(() => {
+                        clearInterval(checkInterval);
+                        if (!ruffleReady) resolve(null);
+                    }, 3000);
+                }
+            });
+        }
+        
+        initRuffle();
+        
+        const asciiAnimations = [
+            `┌─────────────┐\n│ ███████████ │\n│ ███████████ │\n│ ███████████ │\n│ ███████████ │\n│ ███████████ │\n└─────────────┘`,
+            `   ▄▄▄▄▄   \n  █████████  \n  █████████  \n  █████████  \n  █████████  \n   ▀▀▀▀▀   `,
+            `┌───┬───┐\n│ X │ O │\n├───┼───┤\n│ O │ X │\n├───┼───┤\n│ X │ O │\n└───┴───┘`,
+            `  ╭───╮  \n ╭┴───┴╮ \n │╭───╮│ \n ╰┴╯ ╰┴╯ `,
+            `┌───────┐\n│ ███ █ │\n│ ███ █ │\n│ █████ │\n│ █████ │\n└───┬───┘\n    │`
+        ];
+        
+        let currentSort = 'default';
+        let currentGamePath = '';
+        let currentGameName = '';
+        let currentPlayer = null;
+        let isFullscreen = false;
+        let currentLoadPromise = null;
+        let currentPage = 1;
+        let itemsPerPage = 25;
+        
+        let savedCols = localStorage.getItem('gridCols');
+        let defaultCols = savedCols ? parseInt(savedCols) : 4;
+        
+        let performanceMode = localStorage.getItem('performanceMode') === 'true';
+        
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        let lastPlayed = JSON.parse(localStorage.getItem('lastPlayed') || 'null');
+        
+        function saveFavorites() {
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavoritesUI();
+            syncFavoriteButtons();
+        }
+        
+        function syncFavoriteButtons() {
+            document.querySelectorAll('.game-card .favorite-btn').forEach(btn => {
+                const id = btn.getAttribute('data-id');
+                if (favorites.some(f => f.id === id)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        function saveLastPlayed() {
+            localStorage.setItem('lastPlayed', JSON.stringify(lastPlayed));
+            updateLastPlayedUI();
+        }
+        
+        function addToFavorites(gameId, gameName, gameBg, gamePath) {
+            if (!favorites.some(f => f.id === gameId)) {
+                favorites.push({ id: gameId, name: gameName, bg: gameBg, game: gamePath });
+                saveFavorites();
+            }
+        }
+        
+        function removeFromFavorites(gameId) {
+            favorites = favorites.filter(f => f.id !== gameId);
+            saveFavorites();
+        }
+        
+        function toggleFavorite(gameId, gameName, gameBg, gamePath) {
+            if (favorites.some(f => f.id === gameId)) {
+                removeFromFavorites(gameId);
+                return false;
+            } else {
+                addToFavorites(gameId, gameName, gameBg, gamePath);
+                return true;
+            }
+        }
+        
+        function updateLastPlayed(gameId, gameName, gameBg, gamePath, partName) {
+            const displayName = partName || gameName;
+            lastPlayed = { id: gameId, name: displayName, bg: gameBg, game: gamePath, date: new Date().toLocaleString() };
+            saveLastPlayed();
+            addToHistory(gameId, gameName, gameBg, gamePath, partName);
+        }
+        
+        function updateFavoritesUI() {
+            const container = document.getElementById('favoritesList');
+            if (favorites.length === 0) {
+                container.innerHTML = '<div class="no-items">Нет избранных игр</div>';
+                return;
+            }
+            container.innerHTML = favorites.map(fav => `
+                <div class="favorite-item" data-game-id="${fav.id}" data-game-name="${fav.name}" data-game-path="${fav.game}">
+                    <img src="${fav.bg}" alt="${fav.name}" onerror="this.src='prewiew/placeholder.jpg'">
+                    <span>${fav.name}</span>
+                    <button class="remove-fav" data-id="${fav.id}">✕</button>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.favorite-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('remove-fav')) return;
+                    const gamePath = item.getAttribute('data-game-path');
+                    const gameName = item.getAttribute('data-game-name');
+                    if (gamePath && gameName) playGame(gamePath, gameName);
+                });
+                const removeBtn = item.querySelector('.remove-fav');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = removeBtn.getAttribute('data-id');
+                        removeFromFavorites(id);
+                    });
+                }
+            });
+        }
+        
+        function updateLastPlayedUI() {
+            const container = document.getElementById('lastPlayedList');
+            if (!lastPlayed) {
+                container.innerHTML = '<div class="no-items">Ещё не играли</div>';
+                return;
+            }
+            container.innerHTML = `
+                <div class="last-played-item" data-game-path="${lastPlayed.game}" data-game-name="${lastPlayed.name}">
+                    <img src="${lastPlayed.bg}" alt="${lastPlayed.name}" onerror="this.src='prewiew/placeholder.jpg'">
+                    <div class="last-played-info">
+                        <span class="last-played-name">${lastPlayed.name}</span>
+                        <span class="last-played-date">${lastPlayed.date || ''}</span>
+                    </div>
+                </div>
+            `;
+            const item = container.querySelector('.last-played-item');
+            if (item) {
+                item.addEventListener('click', () => {
+                    playGame(lastPlayed.game, lastPlayed.name);
+                });
+            }
+        }
+        
+        const historyToggleBtn = document.getElementById('historyToggleBtn');
+        const historyList = document.getElementById('historyList');
+        if (historyToggleBtn) {
+            historyToggleBtn.addEventListener('click', () => {
+                historyList.classList.toggle('show');
+            });
+        }
+        
+        function setPerformanceMode(enabled) {
+            if (enabled) {
+                document.body.classList.add('performance-mode');
+                document.body.style.backgroundColor = '#000';
+            } else {
+                document.body.classList.remove('performance-mode');
+                document.body.style.backgroundColor = '';
+            }
+            localStorage.setItem('performanceMode', enabled);
+            const toggle = document.getElementById('performanceToggle');
+            if (enabled) {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+        }
+        
+        function setRandomAscii() {
+            const randomIndex = Math.floor(Math.random() * asciiAnimations.length);
+            const asciiDiv = document.getElementById('asciiArt');
+            asciiDiv.innerHTML = `<pre style="margin:0; font-family: monospace; font-size: 8px; line-height: 1.2;">${asciiAnimations[randomIndex]}</pre>`;
+            asciiDiv.style.opacity = '0';
+            setTimeout(() => {
+                asciiDiv.style.transition = 'opacity 0.5s ease';
+                asciiDiv.style.opacity = '1';
+            }, 50);
+        }
+        
+        const mainGamesData = [
+            { id: "douchebag", name: "Douchebag", genre: "Симуляторы Серии игр", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", hasParts: true,
+              parts: [
+                { name: "Douchebag 1", game: "games/Douchebag_1.swf", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!" },
+                { name: "Douchebag 2", game: "games/Douchebag_2.swf", bg: "prewiew/maxresdefault.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!" }
+              ] 
+            },
+            { id: "gunmayhem", name: "Gun Mayhem", genre: "Экшн На двоих Серии игр", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", hasParts: true,
+              parts: [
+                { name: "Gun Mayhem 1", game: "games/gunmayhem.swf", bg: "prewiew/cover-1638866018644.avif", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!" },
+                { name: "Gun Mayhem 2", game: "games/Gun Mayhem 2 More Mayhem.swf", bg: "prewiew/unnamed.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!" }
+              ] 
+            },
+            { id: "cactusmccoy", name: "Cactus McCoy", genre: "Экшн Серии игр", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", hasParts: true,
+              parts: [
+                { name: "Cactus McCoy 1", game: "games/564425_cactusmccoy.swf", bg: "prewiew/cactus_mccoy.webp", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!" },
+                { name: "Cactus McCoy 2", game: "games/581019_cactusmccoy2.swf", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!" }
+              ] 
+            },
+            { id: "feedus", name: "Feed Us", genre: "Аркада Серии игр", bg: "prewiew/feedus.jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Играй за пиранью!", hasParts: true,
+              parts: [
+                { name: "Feed Us 1", game: "games/feedus.swf", bg: "prewiew/maxresdefault (1).jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Классическая первая часть." },
+                { name: "Feed Us 2", game: "games/feed-us-2.swf", bg: "prewiew/feed-us-2.png", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть аркады!" },
+                { name: "Feed Us 3", game: "games/FeedUs3.swf", bg: "prewiew/Без названия.jpg", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!" },
+                { name: "Feed Us 4", game: "games/feedus4.swf", bg: "prewiew/feedus-4-chains.png", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Четвёртая часть!" },
+                { name: "Feed Us 5", game: "games/feedus5.swf", bg: "prewiew/Без названия (1).jpg", rating: 4.8, ratingText: "4.8/5", year: 2015, desc: "Пятая часть!" },
+                { name: "Feed Us Lost Island", game: "games/feedus-lostisland.swf", bg: "prewiew/images (2).jpg", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!" }
+              ] 
+            },
+            { id: "murder", name: "Murder", genre: "Экшн", bg: "prewiew/unnamed.png", game: "games/murder.swf", rating: 4.3, ratingText: "4.3/5", year: 2010, desc: "Жестокий экшн с элементами скрытности." },
+            { id: "torture", name: "Torture", genre: "Симуляторы", bg: "prewiew/g-080619-tec-tortureGame.webp", game: "games/torture_3.swf", rating: 3.8, ratingText: "3.8/5", year: 2009, desc: "Симулятор пыток." },
+            { id: "effingworms", name: "Effing Worms", genre: "Аркада", bg: "prewiew/effingworms.jpg", game: "games/EffingWorms.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Играй за червя, поедай всё на своём пути!" },
+            { id: "bashcomputer", name: "Bash the Computer", genre: "Аркада", bg: "prewiew/bashcomputer.jpg", game: "games/bash-the-computer.swf", rating: 4.2, ratingText: "4.2/5", year: 2009, desc: "Вымести злость на компьютере!" },
+            { id: "therightmix", name: "The Right Mix", genre: "Головоломка", bg: "prewiew/therightmix.jpg", game: "games/flash_therightmix.swf", rating: 4.1, ratingText: "4.1/5", year: 2011, desc: "Музыкальная головоломка." },
+            { id: "meatboy", name: "Meat Boy", genre: "Аркада", bg: "prewiew/meatboy.jpg", game: "games/meatboy.swf", rating: 4.9, ratingText: "4.9/5", year: 2010, desc: "Легендарная аркада!" },
+            { id: "mutiliatedoll", name: "Mutilate a Doll 2", genre: "Симуляторы", bg: "prewiew/_HbHNb.png", game: "games/164481_mutilate-a-doll-2_v4.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Симулятор разрушения куклы." },
+            { id: "handlessmillionaire", name: "Handless Millionaire", genre: "Симуляторы", bg: "prewiew/72585_1320058224_untitled-2.jpg", game: "games/handlessmillionaire.swf", rating: 4.2, ratingText: "4.2/5", year: 2011, desc: "Симулятор жизни без рук." },
+            { id: "waterfire", name: "Water and Fire", genre: "Головоломка На двоих Серии игр", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка про стихии.", hasParts: true,
+              parts: [
+                { name: "Water and Fire 1", game: "games/water_and_fire.swf", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка." },
+                { name: "Water and Fire 2", game: "games/water_and_fire_2.swf", bg: "prewiew/images.jpg", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Вторая часть головоломки!" }
+              ] 
+            },
+            { id: "strikeforce", name: "Strike Force Heroes", genre: "Экшн", bg: "prewiew/strike-force-heroes_1x1.png", game: "games/strike-force-heroes.swf", rating: 4.8, ratingText: "4.8/5", year: 2012, desc: "Динамичный шутер с ролевыми элементами." },
+            { id: "avatar", name: "Avatar Fortress Fight", genre: "Экшн", bg: "prewiew/avatar-fortress-fight-2-v0-t0uckpyyxr861.webp", game: "games/Avatar_fortress_fight.swf", rating: 4.3, ratingText: "4.3/5", year: 2011, desc: "Сражения аватаров в крепости!" },
+            { id: "badicecream", name: "Bad Icecream", genre: "Аркада На двоих", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", game: "games/Bad_Icecream.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Весёлая аркада про мороженое!" },
+            { id: "counterterror", name: "Counter Terror", genre: "Экшн На двоих", bg: "prewiew/flash_611754_card.webp", game: "games/counter_terror.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Тактический шутер против террористов." },
+            { id: "superfighters", name: "Superfighters", genre: "Экшн На двоих", bg: "prewiew/superfighters.jpg", game: "games/superfighters.swf", rating: 4.9, ratingText: "4.9/5", year: 2011, desc: "Безумный файтинг с оружием!" },
+            { id: "tanktrouble", name: "Tank Trouble", genre: "Экшн На двоих", bg: "prewiew/images.png", game: "games/tank_trouble.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Танковая битва в лабиринте!" }
+        ];
+        
+        const searchOnlyGames = [
+            { id: "douchebag1_search", name: "Douchebag 1", genre: "Симуляторы", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", isSearchOnly: true },
+            { id: "douchebag2_search", name: "Douchebag 2", genre: "Симуляторы", bg: "prewiew/maxresdefault.jpg", game: "games/Douchebag_2.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!", isSearchOnly: true },
+            { id: "gunmayhem1_search", name: "Gun Mayhem 1", genre: "Экшн На двоих", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", isSearchOnly: true },
+            { id: "gunmayhem2_search", name: "Gun Mayhem 2", genre: "Экшн На двоих", bg: "prewiew/unnamed.jpg", game: "games/Gun Mayhem 2 More Mayhem.swf", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!", isSearchOnly: true },
+            { id: "cactusmccoy1_search", name: "Cactus McCoy 1", genre: "Экшн", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", isSearchOnly: true },
+            { id: "cactusmccoy2_search", name: "Cactus McCoy 2", genre: "Экшн", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", game: "games/581019_cactusmccoy2.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!", isSearchOnly: true },
+            { id: "feedus1_search", name: "Feed Us 1", genre: "Аркада", bg: "prewiew/maxresdefault (1).jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Классическая первая часть.", isSearchOnly: true },
+            { id: "feedus2_search", name: "Feed Us 2", genre: "Аркада", bg: "prewiew/feed-us-2.png", game: "games/feed-us-2.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть аркады!", isSearchOnly: true },
+            { id: "feedus3_search", name: "Feed Us 3", genre: "Аркада", bg: "prewiew/Без названия.jpg", game: "games/FeedUs3.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!", isSearchOnly: true },
+            { id: "feedus4_search", name: "Feed Us 4", genre: "Аркада", bg: "prewiew/feedus-4-chains.png", game: "games/feedus4.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Четвёртая часть!", isSearchOnly: true },
+            { id: "feedus5_search", name: "Feed Us 5", genre: "Аркада", bg: "prewiew/Без названия (1).jpg", game: "games/feedus5.swf", rating: 4.8, ratingText: "4.8/5", year: 2015, desc: "Пятая часть!", isSearchOnly: true },
+            { id: "feeduslost_search", name: "Feed Us Lost Island", genre: "Аркада", bg: "prewiew/images (2).jpg", game: "games/feedus-lostisland.swf", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!", isSearchOnly: true },
+            { id: "waterfire2_search", name: "Water and Fire 2", genre: "Головоломка На двоих", bg: "prewiew/images.jpg", game: "games/water_and_fire_2.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Вторая часть головоломки!", isSearchOnly: true }
+        ];
+        
+        const allGamesForWheel = [...mainGamesData, ...searchOnlyGames];
+        
+        function sortGames(games, sortType) {
+            const sorted = [...games];
+            switch(sortType) {
+                case 'name-asc': return sorted.sort((a, b) => a.name.localeCompare(b.name));
+                case 'name-desc': return sorted.sort((a, b) => b.name.localeCompare(a.name));
+                case 'rating': return sorted.sort((a, b) => b.rating - a.rating);
+                case 'year-asc': return sorted.sort((a, b) => a.year - b.year);
+                case 'year-desc': return sorted.sort((a, b) => b.year - a.year);
+                default: return shuffleArray([...games]);
+            }
+        }
+        
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        let currentGenre = 'all';
+        let currentSearchTerm = '';
+        let isFiltering = false;
+        let currentPartsSelection = {};
+        
+        function getFilteredGames() {
+            if (currentSearchTerm !== '') {
+                const allGames = [...mainGamesData, ...searchOnlyGames];
+                return allGames.filter(game => {
+                    const genreMatch = currentGenre === 'all' || 
+                        (currentGenre === 'На двоих' && game.genre.includes('На двоих')) ||
+                        (currentGenre === 'Серии игр' && game.hasParts === true) ||
+                        (currentGenre !== 'На двоих' && currentGenre !== 'Серии игр' && (game.genre === currentGenre || game.genre.startsWith(currentGenre)));
+                    const searchMatch = game.name.toLowerCase().includes(currentSearchTerm.toLowerCase());
+                    return genreMatch && searchMatch;
+                });
+            } else {
+                return mainGamesData.filter(game => {
+                    const genreMatch = currentGenre === 'all' || 
+                        (currentGenre === 'На двоих' && game.genre.includes('На двоих')) ||
+                        (currentGenre === 'Серии игр' && game.hasParts === true) ||
+                        (currentGenre !== 'На двоих' && currentGenre !== 'Серии игр' && (game.genre === currentGenre || game.genre.startsWith(currentGenre)));
+                    return genreMatch;
+                });
+            }
+        }
+        
+        function getFilteredAndSortedGames() {
+            const filtered = getFilteredGames();
+            return sortGames(filtered, currentSort);
+        }
+        
+        function updateGamePart(cardElement, gameData, partIndex) {
+            const part = gameData.parts[partIndex];
+            currentPartsSelection[gameData.id] = partIndex;
+            const titleEl = cardElement.querySelector('h3');
+            const imgEl = cardElement.querySelector('img');
+            const playBtn = cardElement.querySelector('button');
+            const infoDescEl = cardElement.querySelector('.game-info p:last-child');
+            const ratingEl = cardElement.querySelector('.game-info p:nth-child(2)');
+            const yearEl = cardElement.querySelector('.game-info p:nth-child(3)');
+            const genreEl = cardElement.querySelector('.game-info p:first-child .genre');
+            titleEl.textContent = part.name;
+            imgEl.src = part.bg;
+            playBtn.setAttribute('onclick', `window.playGame('${part.game}', '${part.name}')`);
+            if (infoDescEl) infoDescEl.innerHTML = `<strong>📝 Описание:</strong> ${part.desc}`;
+            if (ratingEl) ratingEl.innerHTML = `<strong>⭐ Рейтинг:</strong> ${part.ratingText}`;
+            if (yearEl) yearEl.innerHTML = `<strong>📅 Год:</strong> ${part.year}`;
+            if (genreEl && gameData.genre) genreEl.textContent = gameData.genre;
+            cardElement.setAttribute('data-game', part.game);
+            cardElement.setAttribute('data-name', part.name);
+            cardElement.setAttribute('data-bg', part.bg);
+            const menuItems = cardElement.querySelectorAll('.game-part-item');
+            menuItems.forEach((item, idx) => {
+                if (idx === partIndex) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            
+            const favBtn = cardElement.querySelector('.favorite-btn');
+            if (favBtn) {
+                const newId = `${gameData.id}_part_${partIndex}`;
+                const isFav = favorites.some(f => f.id === newId);
+                if (isFav) {
+                    favBtn.classList.add('active');
+                } else {
+                    favBtn.classList.remove('active');
+                }
+                favBtn.setAttribute('data-id', newId);
+                favBtn.setAttribute('data-name', part.name);
+                favBtn.setAttribute('data-bg', part.bg);
+                favBtn.setAttribute('data-game', part.game);
+            }
+            
+            const timeInfo = cardElement.querySelector('.game-info p:nth-child(4)');
+            if (timeInfo) {
+                const newId = `${gameData.id}_part_${partIndex}`;
+                timeInfo.innerHTML = `<strong>⏱️ Время в игре:</strong> ${formatTime(gamePlayTimes[newId] || 0)}`;
+            }
+        }
+        
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            if (game.hasParts && !game.isSearchOnly) card.classList.add('has-parts');
+            card.setAttribute('data-genre', game.genre);
+            card.setAttribute('data-name', game.name);
+            card.setAttribute('data-game', game.game);
+            card.setAttribute('data-id', game.id);
+            card.setAttribute('data-bg', game.bg);
+            
+            const savedPartIndex = currentPartsSelection[game.id] || 0;
+            const selectedPart = (game.hasParts && !game.isSearchOnly) ? game.parts[savedPartIndex] : null;
+            const displayName = selectedPart ? selectedPart.name : game.name;
+            const displayGamePath = selectedPart ? selectedPart.game : game.game;
+            const displayRating = selectedPart ? selectedPart.ratingText : game.ratingText;
+            const displayYear = selectedPart ? selectedPart.year : game.year;
+            const displayDesc = selectedPart ? selectedPart.desc : game.desc;
+            const displayBg = selectedPart ? selectedPart.bg : game.bg;
+            
+            const favoriteId = selectedPart ? `${game.id}_part_${savedPartIndex}` : game.id;
+            const isFav = favorites.some(f => f.id === favoriteId);
+            
+            let partsMenuHtml = '';
+            if (game.hasParts && !game.isSearchOnly && game.parts) {
+                partsMenuHtml = `
+                    <div class="game-parts-menu">
+                        <h4>📀 Другие части</h4>
+                        ${game.parts.map((part, idx) => `
+                            <div class="game-part-item ${idx === savedPartIndex ? 'active' : ''}" data-part-index="${idx}">
+                                ${part.name}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            card.innerHTML = `
+                <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${favoriteId}" data-name="${displayName}" data-bg="${displayBg}" data-game="${displayGamePath}">❤️</button>
+                <div class="image-container" onclick="window.playGameFromCard(this.parentElement)">
+                    <img src="${displayBg}" alt="Превью" loading="lazy" onerror="this.src='prewiew/placeholder.jpg'">
+                </div>
+                <h3>${displayName}</h3>
+                <div class="game-info">
+                    <p><strong>🎮 Жанр:</strong> <span class="genre">${game.genre}</span></p>
+                    <p><strong>⭐ Рейтинг:</strong> ${displayRating}</p>
+                    <p><strong>📅 Год:</strong> ${displayYear}</p>
+                    <p><strong>⏱️ Время в игре:</strong> ${formatTime(gamePlayTimes[favoriteId] || 0)}</p>
+                    <p><strong>📝 Описание:</strong> ${displayDesc}</p>
+                </div>
+                <button onclick="window.playGame('${displayGamePath}', '${displayName}')">▶ Играть</button>
+                ${partsMenuHtml}
+            `;
+            
+            const favBtn = card.querySelector('.favorite-btn');
+            if (favBtn) {
+                favBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = favBtn.getAttribute('data-id');
+                    const name = favBtn.getAttribute('data-name');
+                    const bg = favBtn.getAttribute('data-bg');
+                    const gamePath = favBtn.getAttribute('data-game');
+                    const isNowFav = toggleFavorite(id, name, bg, gamePath);
+                    if (isNowFav) {
+                        favBtn.classList.add('active');
+                    } else {
+                        favBtn.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (game.hasParts && !game.isSearchOnly && game.parts) {
+                setTimeout(() => {
+                    const menuItems = card.querySelectorAll('.game-part-item');
+                    menuItems.forEach((item, idx) => {
+                        item.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            updateGamePart(card, game, idx);
+                        });
+                    });
+                }, 0);
+            }
+            return card;
+        }
+        
+        function updatePagination(totalGames) {
+            const totalPages = Math.ceil(totalGames / itemsPerPage);
+            const paginationDiv = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                paginationDiv.innerHTML = '';
+                return;
+            }
+            
+            let paginationHtml = '';
+            paginationHtml += `<button class="page-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>◀ Назад</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHtml += `<span style="color: white; padding: 0 5px;">...</span>`;
+                }
+            }
+            
+            paginationHtml += `<button class="page-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>Вперед ▶</button>`;
+            
+            paginationDiv.innerHTML = paginationHtml;
+            
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                if (!btn.disabled) {
+                    btn.addEventListener('click', () => {
+                        const page = parseInt(btn.getAttribute('data-page'));
+                        if (!isNaN(page) && page !== currentPage) {
+                            currentPage = page;
+                            renderCurrentPage();
+                        }
+                    });
+                }
+            });
+        }
+        
+        function renderCurrentPage() {
+            const grid = document.getElementById('gamesGrid');
+            const allGames = getFilteredAndSortedGames();
+            const totalGames = allGames.length;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageGames = allGames.slice(startIndex, endIndex);
+            
+            grid.innerHTML = '';
+            pageGames.forEach(game => {
+                const card = createGameCard(game);
+                card.classList.add('appearing');
+                grid.appendChild(card);
+                setTimeout(() => card.classList.remove('appearing'), 200);
+            });
+            
+            updatePagination(totalGames);
+            
+            const totalGamesCount = currentSearchTerm !== '' ? mainGamesData.length + searchOnlyGames.length : mainGamesData.length;
+            document.getElementById('gameCount').innerHTML = `Найдено: ${allGames.length} / ${totalGamesCount}`;
+            
+            let noGamesMsg = document.getElementById('noGamesMsg');
+            if (pageGames.length === 0) {
+                if (!noGamesMsg) {
+                    noGamesMsg = document.createElement('div');
+                    noGamesMsg.id = 'noGamesMsg';
+                    noGamesMsg.style.cssText = 'color: white; text-align: center; padding: 50px; font-size: 18px; grid-column: 1 / -1;';
+                    noGamesMsg.innerHTML = '😕 Ничего не найдено';
+                    grid.appendChild(noGamesMsg);
+                }
+            } else if (noGamesMsg) noGamesMsg.remove();
+        }
+        
+        async function filterAndRender() {
+            if (isFiltering) return;
+            isFiltering = true;
+            currentPage = 1;
+            renderCurrentPage();
+            isFiltering = false;
+        }
+        
+        function initialRender() {
+            renderCurrentPage();
+            updateFavoritesUI();
+            updateLastPlayedUI();
+            updateHistoryUI();
+        }
+        
+        const gridSlider = document.getElementById('gridSlider');
+        const gridValue = document.getElementById('gridValue');
+        const gamesGrid = document.getElementById('gamesGrid');
+        
+        function setGridCols(cols) {
+            gamesGrid.classList.remove('cols-3', 'cols-4', 'cols-5');
+            gamesGrid.classList.add(`cols-${cols}`);
+            let text = '';
+            switch(cols) {
+                case 3: text = '3 колонки'; break;
+                case 4: text = '4 колонки'; break;
+                case 5: text = '5 колонок'; break;
+            }
+            gridValue.textContent = text;
+            localStorage.setItem('gridCols', cols);
+        }
+        
+        gridSlider.addEventListener('input', function() {
+            const cols = parseInt(this.value);
+            setGridCols(cols);
+        });
+        
+        setGridCols(defaultCols);
+        gridSlider.value = defaultCols;
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentGenre = this.getAttribute('data-genre');
+                await filterAndRender();
+            });
+        });
+        
+        const sortBtn = document.getElementById('sortBtn');
+        const sortDropdown = document.getElementById('sortDropdown');
+        sortBtn.addEventListener('click', () => sortDropdown.classList.toggle('show'));
+        document.querySelectorAll('.sort-dropdown-item').forEach(item => {
+            item.addEventListener('click', async function() {
+                currentSort = this.getAttribute('data-sort');
+                sortBtn.innerHTML = `📊 ${this.textContent} ▼`;
+                sortDropdown.classList.remove('show');
+                await filterAndRender();
+            });
+        });
+        document.addEventListener('click', function(e) {
+            if (!sortBtn.contains(e.target) && !sortDropdown.contains(e.target)) sortDropdown.classList.remove('show');
+        });
+        
+        const searchInput = document.getElementById('searchInput');
+        const searchDropdown = document.getElementById('searchDropdown');
+        searchInput.addEventListener('input', async function() {
+            const query = this.value.toLowerCase();
+            currentSearchTerm = query;
+            await filterAndRender();
+            if (query.length > 0) {
+                const allGames = [...mainGamesData, ...searchOnlyGames];
+                const matches = allGames.filter(game => game.name.toLowerCase().includes(query));
+                if (matches.length > 0) {
+                    searchDropdown.innerHTML = matches.map(match => `
+                        <div class="search-dropdown-item" onclick="window.playGame('${match.game}', '${match.name}'); searchDropdown.classList.remove('show'); searchInput.value = ''; currentSearchTerm = ''; filterAndRender();">
+                            🎮 ${match.name}
+                        </div>
+                    `).join('');
+                    searchDropdown.classList.add('show');
+                } else searchDropdown.classList.remove('show');
+            } else searchDropdown.classList.remove('show');
+        });
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) searchDropdown.classList.remove('show');
+        });
+        
+        function showLoading() { 
+            const loader = document.getElementById('loadingIndicator');
+            loader.classList.add('visible');
+        }
+        function hideLoading() { 
+            const loader = document.getElementById('loadingIndicator');
+            loader.classList.remove('visible');
+            setTimeout(() => {
+                if (!loader.classList.contains('visible')) {
+                    loader.style.display = 'none';
+                }
+            }, 300);
+        }
+        
+        function startGameTimer(gameId) {
+            if (gameTimerInterval) {
+                clearInterval(gameTimerInterval);
+            }
+            gameStartTime = Date.now();
+            currentGamePlayId = gameId;
+            gameTimerInterval = setInterval(() => {
+                if (currentGamePlayId && gameStartTime) {
+                    const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+                    const cards = document.querySelectorAll('.game-card');
+                    cards.forEach(card => {
+                        const gamePath = card.getAttribute('data-game');
+                        if (gamePath === currentGamePath) {
+                            const timeInfo = card.querySelector('.game-info p:nth-child(4)');
+                            if (timeInfo) {
+                                const totalTime = (gamePlayTimes[currentGamePlayId] || 0) + elapsed;
+                                timeInfo.innerHTML = `<strong>⏱️ Время в игре:</strong> ${formatTime(totalTime)}`;
+                            }
+                        }
+                    });
+                }
+            }, 1000);
+        }
+        
+        function stopGameTimer() {
+            if (gameTimerInterval && currentGamePlayId && gameStartTime) {
+                const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+                if (elapsed > 0) {
+                    saveGameTime(currentGamePlayId, elapsed);
+                }
+                clearInterval(gameTimerInterval);
+                gameTimerInterval = null;
+                gameStartTime = null;
+                currentGamePlayId = null;
+            }
+        }
+        
+        // Анимация растворения карточки
+        function animateCardDissolve(cardElement, gamePath, gameName) {
+            if (performanceMode) {
+                playGame(gamePath, gameName);
+                return;
+            }
+            
+            const rect = cardElement.getBoundingClientRect();
+            const clone = cardElement.cloneNode(true);
+            clone.style.position = 'fixed';
+            clone.style.top = rect.top + 'px';
+            clone.style.left = rect.left + 'px';
+            clone.style.width = rect.width + 'px';
+            clone.style.height = rect.height + 'px';
+            clone.style.margin = '0';
+            clone.style.zIndex = '2000';
+            clone.style.pointerEvents = 'none';
+            clone.classList.add('anim-dissolve');
+            
+            document.body.appendChild(clone);
+            
+            // Плавно скрываем основной контент
+            const siteContent = document.getElementById('siteContent');
+            siteContent.classList.add('fade-out-site');
+            
+            // Скрываем оригинальную карточку
+            cardElement.style.opacity = '0';
+            cardElement.style.visibility = 'hidden';
+            
+            // Запускаем игру после анимации
+            setTimeout(() => {
+                clone.remove();
+                cardElement.style.opacity = '';
+                cardElement.style.visibility = '';
+                playGame(gamePath, gameName);
+            }, 600);
+        }
+        
+        function unloadSiteForGame() {
+            // Сайт уже скрыт через fade-out-site, просто скрываем элементы управления
+            const scrollTop = document.getElementById('scrollTopBtn');
+            if (scrollTop) scrollTop.style.display = 'none';
+            const randomGame = document.getElementById('randomGameBtn');
+            if (randomGame) randomGame.style.display = 'none';
+        }
+        
+        function reloadSiteAfterGame() {
+            const siteContent = document.getElementById('siteContent');
+            siteContent.classList.remove('fade-out-site');
+            const scrollTop = document.getElementById('scrollTopBtn');
+            if (scrollTop) scrollTop.style.display = 'flex';
+            const randomGame = document.getElementById('randomGameBtn');
+            if (randomGame) randomGame.style.display = 'flex';
+            renderCurrentPage();
+            updateFavoritesUI();
+            updateLastPlayedUI();
+            updateHistoryUI();
+            syncFavoriteButtons();
+        }
+        
+        async function playGame(gamePath, gameName) {
+            if (currentLoadPromise && currentGamePath === gamePath) return;
+            
+            stopGameTimer();
+            
+            const allGames = [...mainGamesData, ...searchOnlyGames];
+            let gameId = null;
+            let gameBg = '';
+            let displayGameName = gameName;
+            
+            for (const game of allGames) {
+                if (game.parts) {
+                    for (let i = 0; i < game.parts.length; i++) {
+                        if (game.parts[i].game === gamePath) {
+                            gameId = `${game.id}_part_${i}`;
+                            gameBg = game.parts[i].bg;
+                            displayGameName = game.parts[i].name;
+                            break;
+                        }
+                    }
+                }
+                if (!gameId && game.game === gamePath) {
+                    gameId = game.id;
+                    gameBg = game.bg;
+                }
+                if (gameId) break;
+            }
+            
+            if (gameId) {
+                updateLastPlayed(gameId, gameName, gameBg, gamePath, displayGameName !== gameName ? displayGameName : null);
+                startGameTimer(gameId);
+            }
+            
+            unloadSiteForGame();
+            
+            currentGamePath = gamePath;
+            currentGameName = gameName;
+            const container = document.getElementById('game-container');
+            const playerDiv = document.getElementById('ruffle-player');
+            const gameTitleSpan = document.getElementById('gameTitle');
+            
+            // Показываем загрузку с плавным появлением
+            showLoading();
+            gameTitleSpan.innerHTML = `🎮 ${gameName}`;
+            
+            if (currentPlayer) {
+                try { playerDiv.innerHTML = ''; } catch(e) {}
+                currentPlayer = null;
+            }
+            
+            // Плавно показываем контейнер игры
+            setTimeout(() => container.classList.add('active'), 100);
+            document.body.style.overflow = 'hidden';
+            
+            const ruffle = await initRuffle();
+            if (!ruffle) {
+                hideLoading();
+                playerDiv.innerHTML = '<div style="color:white; text-align:center; margin-top:100px;">❌ Не удалось загрузить эмулятор Flash. Попробуйте обновить страницу.</div>';
+                return;
+            }
+            try {
+                currentPlayer = ruffle.createPlayer();
+                currentPlayer.style.width = '100%';
+                currentPlayer.style.height = '100%';
+                playerDiv.appendChild(currentPlayer);
+                const loadPromise = currentPlayer.load(gamePath);
+                currentLoadPromise = loadPromise;
+                await Promise.race([loadPromise, new Promise((_, reject) => setTimeout(() => reject(new Error('Таймаут')), 15000))]);
+                hideLoading();
+                currentLoadPromise = null;
+            } catch (error) {
+                console.error(error);
+                hideLoading();
+                currentLoadPromise = null;
+                playerDiv.innerHTML = `
+                    <div style="color:white; text-align:center; margin-top:100px;">
+                        ❌ Ошибка загрузки игры.<br>
+                        <button onclick="window.restartGame()" style="background:#8B0000; border:none; color:white; padding:10px 20px; border-radius:5px; margin-top:15px; cursor:pointer;">Попробовать снова</button>
+                    </div>
+                `;
+            }
+        }
+        
+        function restartGame() { 
+            if (currentGamePath && currentGameName) {
+                playGame(currentGamePath, currentGameName);
+            } else if (currentGamePath) {
+                playGame(currentGamePath, currentGameName);
+            }
+        }
+        
+        function closeGame() {
+            stopGameTimer();
+            const container = document.getElementById('game-container');
+            const playerDiv = document.getElementById('ruffle-player');
+            if (isFullscreen) exitFullscreenMode();
+            container.classList.remove('active');
+            setTimeout(() => {
+                if (currentPlayer) {
+                    try { playerDiv.innerHTML = ''; } catch(e) {}
+                    currentPlayer = null;
+                }
+                currentLoadPromise = null;
+                reloadSiteAfterGame();
+            }, 300);
+            document.body.style.overflow = 'auto';
+            currentGamePath = '';
+            currentGameName = '';
+        }
+        
+        function toggleFullscreen() {
+            const container = document.getElementById('game-container');
+            if (!isFullscreen) {
+                if (container.requestFullscreen) container.requestFullscreen();
+                else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+                else if (container.msRequestFullscreen) container.msRequestFullscreen();
+                container.classList.add('fullscreen');
+                isFullscreen = true;
+                document.getElementById('fullscreenBtn').textContent = '✕ Выйти';
+            } else exitFullscreenMode();
+        }
+        
+        function exitFullscreenMode() {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+            document.getElementById('game-container').classList.remove('fullscreen');
+            isFullscreen = false;
+            document.getElementById('fullscreenBtn').textContent = '⛶ Полный экран';
+        }
+        
+        document.addEventListener('fullscreenchange', function() {
+            const container = document.getElementById('game-container');
+            if (!document.fullscreenElement) {
+                container.classList.remove('fullscreen');
+                isFullscreen = false;
+                document.getElementById('fullscreenBtn').textContent = '⛶ Полный экран';
+            }
+        });
+        
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
+        });
+        
+        // КОЛЕСО ФОРТУНЫ
+        const wheelModal = document.getElementById('wheelModal');
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const ctx = wheelCanvas.getContext('2d');
+        const spinBtn = document.getElementById('spinWheelBtn');
+        const closeWheelBtn = document.getElementById('closeWheelBtn');
+        const randomGameBtn = document.getElementById('randomGameBtn');
+        const wheelContainer = document.getElementById('wheelContainer');
+        const resultPreview = document.getElementById('resultPreview');
+        
+        let currentAngle = 0;
+        let isSpinningWheel = false;
+        let spinAnimationWheel = null;
+        
+        const wheelGames = [...allGamesForWheel];
+        const segmentCount = wheelGames.length;
+        const segmentAngle = (Math.PI * 2) / segmentCount;
+        
+        const colors = [
+            '#4a4a4a', '#555555', '#606060', '#6a6a6a', '#757575',
+            '#808080', '#8a8a8a', '#959595', '#9a9a9a', '#858585',
+            '#707070', '#656565', '#5a5a5a', '#4f4f4f', '#454545'
+        ];
+        
+        function drawWheel() {
+            const size = wheelCanvas.width;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size / 2 - 10;
+            
+            ctx.clearRect(0, 0, size, size);
+            
+            for (let i = 0; i < segmentCount; i++) {
+                const start = currentAngle + i * segmentAngle;
+                const end = start + segmentAngle;
+                const game = wheelGames[i];
+                const displayGame = game.hasParts ? game.parts[currentPartsSelection[game.id] || 0] : game;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, start, end);
+                ctx.closePath();
+                
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(start + segmentAngle / 2);
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = 'bold 12px "VT323", monospace';
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.shadowBlur = 0;
+                
+                let shortName = displayGame.name;
+                if (shortName.length > 12) {
+                    shortName = shortName.substring(0, 10) + '...';
+                }
+                
+                ctx.fillText(shortName, radius * 0.65, 0);
+                ctx.restore();
+            }
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+            ctx.fillStyle = '#2a2a2e';
+            ctx.fill();
+            ctx.strokeStyle = '#888';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        
+        function getCurrentWinningGame() {
+            const pointerAngle = -Math.PI / 2;
+            let winningIndex = -1;
+            
+            for (let i = 0; i < segmentCount; i++) {
+                const start = currentAngle + i * segmentAngle;
+                const end = start + segmentAngle;
+                
+                let diff = pointerAngle - start;
+                while (diff < 0) diff += Math.PI * 2;
+                while (diff > Math.PI * 2) diff -= Math.PI * 2;
+                
+                if (diff >= 0 && diff <= segmentAngle) {
+                    winningIndex = i;
+                    break;
+                }
+            }
+            
+            if (winningIndex === -1) winningIndex = 0;
+            return wheelGames[winningIndex];
+        }
+        
+        function openWheelModal() {
+            wheelModal.classList.add('show');
+            wheelContainer.classList.remove('transforming');
+            resultPreview.innerHTML = '';
+            drawWheel();
+        }
+        
+        function closeWheelModal() {
+            if (isSpinningWheel) return;
+            wheelModal.classList.remove('show');
+            wheelContainer.classList.remove('transforming');
+            resultPreview.innerHTML = '';
+            if (spinAnimationWheel) {
+                cancelAnimationFrame(spinAnimationWheel);
+                spinAnimationWheel = null;
+            }
+            isSpinningWheel = false;
+        }
+        
+        function transformToCard(game, displayGame) {
+            wheelContainer.classList.add('transforming');
+            resultPreview.innerHTML = `
+                <img src="${displayGame.bg}" alt="${displayGame.name}" onerror="this.src='prewiew/placeholder.jpg'">
+                <h3>${displayGame.name}</h3>
+                <p>${displayGame.desc.substring(0, 100)}${displayGame.desc.length > 100 ? '...' : ''}</p>
+                <button id="playFromWheelBtn">🎮 ИГРАТЬ</button>
+            `;
+            const playFromWheelBtn = document.getElementById('playFromWheelBtn');
+            if (playFromWheelBtn) {
+                playFromWheelBtn.addEventListener('click', () => {
+                    closeWheelModal();
+                    setTimeout(() => {
+                        playGame(game.game, displayGame.name);
+                    }, 100);
+                });
+            }
+        }
+        
+        function spinWheel() {
+            if (isSpinningWheel) return;
+            isSpinningWheel = true;
+            spinBtn.style.pointerEvents = 'none';
+            wheelContainer.classList.remove('transforming');
+            resultPreview.innerHTML = '';
+            
+            const spins = 6 + Math.random() * 4;
+            const targetRotation = currentAngle + (spins * Math.PI * 2);
+            const duration = 3000;
+            const startTime = performance.now();
+            const startAngle = currentAngle;
+            const distance = targetRotation - startAngle;
+            
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+            
+            function animateSpin(now) {
+                const elapsed = now - startTime;
+                let progress = Math.min(elapsed / duration, 1);
+                const easedProgress = easeOutCubic(progress);
+                currentAngle = startAngle + distance * easedProgress;
+                drawWheel();
+                
+                if (progress < 1) {
+                    spinAnimationWheel = requestAnimationFrame(animateSpin);
+                } else {
+                    spinAnimationWheel = null;
+                    isSpinningWheel = false;
+                    spinBtn.style.pointerEvents = 'auto';
+                    
+                    const winningGame = getCurrentWinningGame();
+                    const savedPartIndex = currentPartsSelection[winningGame.id] || 0;
+                    const displayWinningGame = winningGame.hasParts ? winningGame.parts[savedPartIndex] : winningGame;
+                    
+                    setTimeout(() => {
+                        transformToCard(winningGame, displayWinningGame);
+                    }, 200);
+                }
+            }
+            
+            spinAnimationWheel = requestAnimationFrame(animateSpin);
+        }
+        
+        const performanceToggle = document.getElementById('performanceToggle');
+        performanceToggle.addEventListener('click', () => {
+            setPerformanceMode(!performanceMode);
+            performanceMode = !performanceMode;
+        });
+        
+        setPerformanceMode(performanceMode);
+        
+        randomGameBtn.addEventListener('click', openWheelModal);
+        spinBtn.addEventListener('click', spinWheel);
+        closeWheelBtn.addEventListener('click', closeWheelModal);
+        
+        wheelModal.addEventListener('click', (e) => {
+            if (e.target === wheelModal && !isSpinningWheel) {
+                closeWheelModal();
+            }
+        });
+        
+        function playGameFromCard(card) { 
+            const gamePath = card.getAttribute('data-game');
+            const gameName = card.querySelector('h3').textContent;
+            if (gamePath && gameName) {
+                animateCardDissolve(card, gamePath, gameName);
+            }
+        }
+        
+        document.getElementById('restartBtn').onclick = restartGame;
+        document.getElementById('fullscreenBtn').onclick = toggleFullscreen;
+        document.querySelector('#game-container .close-btn').onclick = closeGame;
+        document.getElementById('scrollTopBtn').onclick = scrollToTop;
+        
+        window.playGame = playGame;
+        window.playGameFromCard = playGameFromCard;
+        window.restartGame = restartGame;
+        window.closeGame = closeGame;
+        window.toggleFullscreen = toggleFullscreen;
+        
+        updateTotalTimeDisplay();
+        startSiteTimer();
+        setRandomAscii();
+        initialRender();
+    })();
+</script>
+
+</body>
+</html>
