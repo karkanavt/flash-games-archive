@@ -79,7 +79,6 @@
             pointer-events: none;
         }
 
-        /* Анимация растворения карточки */
         .game-card.anim-dissolve {
             animation: dissolveAnimation 0.6s cubic-bezier(0.2, 0.9, 0.4, 1) forwards !important;
             position: fixed !important;
@@ -642,7 +641,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Остальные стили (фильтры, карточки и т.д.) такие же как раньше */
         .fade-out {
             opacity: 0;
             visibility: hidden;
@@ -1859,7 +1857,7 @@
             <div class="search-section">
                 <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск игр...">
                 <div id="searchDropdown" class="search-dropdown"></div>
-                <div id="gameCount" class="game-count">Всего игр: 17</div>
+                <div id="gameCount" class="game-count">Всего игр: 27</div>
             </div>
         </div>
 
@@ -2201,25 +2199,34 @@
             }, 50);
         }
         
+        // ========== ВСЕ ИГРЫ ==========
+        
         const mainGamesData = [
+            // Douchebag (2 части)
             { id: "douchebag", name: "Douchebag", genre: "Симуляторы Серии игр", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", hasParts: true,
               parts: [
                 { name: "Douchebag 1", game: "games/Douchebag_1.swf", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!" },
                 { name: "Douchebag 2", game: "games/Douchebag_2.swf", bg: "prewiew/maxresdefault.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!" }
               ] 
             },
+            
+            // Gun Mayhem (2 части)
             { id: "gunmayhem", name: "Gun Mayhem", genre: "Экшн На двоих Серии игр", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", hasParts: true,
               parts: [
                 { name: "Gun Mayhem 1", game: "games/gunmayhem.swf", bg: "prewiew/cover-1638866018644.avif", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!" },
                 { name: "Gun Mayhem 2", game: "games/Gun Mayhem 2 More Mayhem.swf", bg: "prewiew/unnamed.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!" }
               ] 
             },
+            
+            // Cactus McCoy (2 части)
             { id: "cactusmccoy", name: "Cactus McCoy", genre: "Экшн Серии игр", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", hasParts: true,
               parts: [
                 { name: "Cactus McCoy 1", game: "games/564425_cactusmccoy.swf", bg: "prewiew/cactus_mccoy.webp", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!" },
                 { name: "Cactus McCoy 2", game: "games/581019_cactusmccoy2.swf", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!" }
               ] 
             },
+            
+            // Feed Us (6 частей)
             { id: "feedus", name: "Feed Us", genre: "Аркада Серии игр", bg: "prewiew/feedus.jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Играй за пиранью!", hasParts: true,
               parts: [
                 { name: "Feed Us 1", game: "games/feedus.swf", bg: "prewiew/maxresdefault (1).jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Классическая первая часть." },
@@ -2230,42 +2237,157 @@
                 { name: "Feed Us Lost Island", game: "games/feedus-lostisland.swf", bg: "prewiew/images (2).jpg", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!" }
               ] 
             },
-            { id: "murder", name: "Murder", genre: "Экшн", bg: "prewiew/unnamed.png", game: "games/murder.swf", rating: 4.3, ratingText: "4.3/5", year: 2010, desc: "Жестокий экшн с элементами скрытности." },
-            { id: "torture", name: "Torture", genre: "Симуляторы", bg: "prewiew/g-080619-tec-tortureGame.webp", game: "games/torture_3.swf", rating: 3.8, ratingText: "3.8/5", year: 2009, desc: "Симулятор пыток." },
-            { id: "effingworms", name: "Effing Worms", genre: "Аркада", bg: "prewiew/effingworms.jpg", game: "games/EffingWorms.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Играй за червя, поедай всё на своём пути!" },
-            { id: "bashcomputer", name: "Bash the Computer", genre: "Аркада", bg: "prewiew/bashcomputer.jpg", game: "games/bash-the-computer.swf", rating: 4.2, ratingText: "4.2/5", year: 2009, desc: "Вымести злость на компьютере!" },
-            { id: "therightmix", name: "The Right Mix", genre: "Головоломка", bg: "prewiew/therightmix.jpg", game: "games/flash_therightmix.swf", rating: 4.1, ratingText: "4.1/5", year: 2011, desc: "Музыкальная головоломка." },
-            { id: "meatboy", name: "Meat Boy", genre: "Аркада", bg: "prewiew/meatboy.jpg", game: "games/meatboy.swf", rating: 4.9, ratingText: "4.9/5", year: 2010, desc: "Легендарная аркада!" },
-            { id: "mutiliatedoll", name: "Mutilate a Doll 2", genre: "Симуляторы", bg: "prewiew/_HbHNb.png", game: "games/164481_mutilate-a-doll-2_v4.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Симулятор разрушения куклы." },
-            { id: "handlessmillionaire", name: "Handless Millionaire", genre: "Симуляторы", bg: "prewiew/72585_1320058224_untitled-2.jpg", game: "games/handlessmillionaire.swf", rating: 4.2, ratingText: "4.2/5", year: 2011, desc: "Симулятор жизни без рук." },
-            { id: "waterfire", name: "Water and Fire", genre: "Головоломка На двоих Серии игр", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка про стихии.", hasParts: true,
+            
+            // Sushi Cat (5 частей + катапульт)
+            { id: "sushicat", name: "Sushi Cat", genre: "Аркада Серии игр", bg: "prewiew/sushicat.jpg", game: "games/SushiCat.swf", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Весёлая аркада про кота, который любит суши!", hasParts: true,
               parts: [
-                { name: "Water and Fire 1", game: "games/water_and_fire.swf", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка." },
-                { name: "Water and Fire 2", game: "games/water_and_fire_2.swf", bg: "prewiew/images.jpg", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Вторая часть головоломки!" }
+                { name: "Sushi Cat 1", game: "games/SushiCat.swf", bg: "prewiew/sushicat.jpg", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Классическая первая часть! Помоги коту собрать все суши." },
+                { name: "Sushi Cat 2", game: "games/sushicat2.swf", bg: "prewiew/sushicat2.jpg", rating: 4.7, ratingText: "4.7/5", year: 2011, desc: "Вторая часть! Новые уровни и ещё больше суши!" },
+                { name: "Sushi Cat 2: The Great Purrade", game: "games/sushicat2thegreatpurrade.swf", bg: "prewiew/sushicat2purrade.jpg", rating: 4.8, ratingText: "4.8/5", year: 2012, desc: "Специальное издание! Грандиозное приключение кота." },
+                { name: "Sushi Cat: The Honeymoon", game: "games/sushicatthehoneymoon.swf", bg: "prewiew/sushicat_honeymoon.jpg", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Медовый месяц суши-кота! Романтическое приключение." },
+                { name: "Sushi Catapult", game: "games/sushicatapult.swf", bg: "prewiew/sushicatapult.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Котопульт! Запускай кота из катапульты и собирай суши в воздухе." }
               ] 
             },
+            
+            // Skywire (2 части)
+            { id: "skywire", name: "Skywire", genre: "Аркада Серии игр", bg: "prewiew/skywire.jpg", game: "games/Skywire - A Free Game by Nitrome.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Классическая аркада от Nitrome!", hasParts: true,
+              parts: [
+                { name: "Skywire 1", game: "games/Skywire - A Free Game by Nitrome.swf", bg: "prewiew/skywire.jpg", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Проведи вагонетку по опасным рельсам!" },
+                { name: "Skywire 2", game: "games/Skywire_2.swf", bg: "prewiew/skywire2.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение! Ещё более опасные рельсы!" }
+              ] 
+            },
+            
+            // Bad Ice Cream (3 части)
+            { id: "badicecream", name: "Bad Ice Cream", genre: "Аркада На двоих Серии игр", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", game: "games/Bad_Icecream.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Весёлая аркада про мороженое!", hasParts: true,
+              parts: [
+                { name: "Bad Ice Cream 1", game: "games/Bad_Icecream.swf", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Классическая первая часть!" },
+                { name: "Bad Ice Cream 2", game: "games/bad_ice_cream_2.swf", bg: "prewiew/badicecream2.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть! Новые уровни и фрукты." },
+                { name: "Bad Ice Cream 3", game: "games/bad_ice_cream_3.swf", bg: "prewiew/badicecream3.jpg", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть! Ещё больше льда и веселья!" }
+              ] 
+            },
+            
+            // Water and Fire (4 части: 1, 2, 3, 4)
+            { id: "waterfire", name: "Water and Fire", genre: "Головоломка На двоих Серии игр", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка про стихии.", hasParts: true,
+              parts: [
+                { name: "Water and Fire 1", game: "games/Fireboy & Watergirl1.swf", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Первая часть! Управляйте водой и огнём вместе." },
+                { name: "Water and Fire 2", game: "games/water_and_fire.swf", bg: "prewiew/images.jpg", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Вторая часть головоломки!" },
+                { name: "Water and Fire 3", game: "games/water_and_fire_2.swf", bg: "prewiew/fireboywatergirl3.jpg", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Третья часть головоломки!" },
+                { name: "Water and Fire 4", game: "games/FireBoyAndWaterGirl4_KONG.swf", bg: "prewiew/fireboywatergirl4.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Четвёртая часть! Новые механики и кристаллы." }
+              ] 
+            },
+            
+            // Bomb It (4 части в правильном порядке)
+            { id: "bombit", name: "Bomb It", genre: "Аркада Экшн Серии игр", bg: "prewiew/bombit.jpg", game: "games/Bomb It 1.swf", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Динамичная аркада про бомбы!", hasParts: true,
+              parts: [
+                { name: "Bomb It 1", game: "games/Bomb It 1.swf", bg: "prewiew/bombit1.jpg", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Первая часть! Ставь бомбы и уничтожай врагов." },
+                { name: "Bomb It 2", game: "games/bombit2.swf", bg: "prewiew/bombit2.jpg", rating: 4.5, ratingText: "4.5/5", year: 2010, desc: "Вторая часть! Новые уровни и противники." },
+                { name: "Bomb It 3", game: "games/bombit3.swf", bg: "prewiew/bombit3.jpg", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Третья часть! Ещё больше взрывов и бомб." },
+                { name: "Bomb It 4", game: "games/bombit4.swf", bg: "prewiew/bombit4.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Четвёртая часть! Финальная битва." }
+              ] 
+            },
+            
+            // Super Smash Flash (2 части)
+            { id: "supersmashflash", name: "Super Smash Flash", genre: "Файтинг Экшн Серии игр", bg: "prewiew/supersmashflash.jpg", game: "games/Super Smash Flash.swf", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Фанатский кроссовер-файтинг!", hasParts: true,
+              parts: [
+                { name: "Super Smash Flash 1", game: "games/Super Smash Flash.swf", bg: "prewiew/supersmashflash1.jpg", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Первая часть! Битва персонажей из вселенной Nintendo." },
+                { name: "Super Smash Flash 2", game: "games/Super Smash Flash2.swf", bg: "prewiew/supersmashflash2.jpg", rating: 4.9, ratingText: "4.9/5", year: 2012, desc: "Вторая часть! Ещё больше персонажей и атак!" }
+              ] 
+            },
+            
+            // ОДИНОЧНЫЕ ИГРЫ
+            
+            { id: "nitromemustdie", name: "Nitrome Must Die", genre: "Экшн", bg: "prewiew/nitromemustdie.jpg", game: "games/nitromemustdie.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Безумный экшн от Nitrome! Прорывайся через уровни с кучей врагов." },
+            
+            { id: "mutantcat", name: "Mutant Fighting Cup 2016 - Cat Edition", genre: "Экшн На двоих", bg: "prewiew/mutantcat.jpg", game: "games/mutant-fighting-cup-2016-cat-edition.swf", rating: 4.3, ratingText: "4.3/5", year: 2016, desc: "Битвы мутантов-котов! Выбирай бойца и сражайся с друзьями." },
+            
+            { id: "murder", name: "Murder", genre: "Экшн", bg: "prewiew/unnamed.png", game: "games/murder.swf", rating: 4.3, ratingText: "4.3/5", year: 2010, desc: "Жестокий экшн с элементами скрытности." },
+            
+            { id: "torture", name: "Torture", genre: "Симуляторы", bg: "prewiew/g-080619-tec-tortureGame.webp", game: "games/torture_3.swf", rating: 3.8, ratingText: "3.8/5", year: 2009, desc: "Симулятор пыток." },
+            
+            { id: "effingworms", name: "Effing Worms", genre: "Аркада", bg: "prewiew/effingworms.jpg", game: "games/EffingWorms.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Играй за червя, поедай всё на своём пути!" },
+            
+            { id: "bashcomputer", name: "Bash the Computer", genre: "Аркада", bg: "prewiew/bashcomputer.jpg", game: "games/bash-the-computer.swf", rating: 4.2, ratingText: "4.2/5", year: 2009, desc: "Вымести злость на компьютере!" },
+            
+            { id: "therightmix", name: "The Right Mix", genre: "Головоломка", bg: "prewiew/therightmix.jpg", game: "games/flash_therightmix.swf", rating: 4.1, ratingText: "4.1/5", year: 2011, desc: "Музыкальная головоломка." },
+            
+            { id: "meatboy", name: "Meat Boy", genre: "Аркада", bg: "prewiew/meatboy.jpg", game: "games/meatboy.swf", rating: 4.9, ratingText: "4.9/5", year: 2010, desc: "Легендарная аркада!" },
+            
+            { id: "mutiliatedoll", name: "Mutilate a Doll 2", genre: "Симуляторы", bg: "prewiew/HbHNd.png", game: "games/164481_mutilate-a-doll-2_v4.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Симулятор разрушения куклы." },
+            
+            { id: "handlessmillionaire", name: "Handless Millionaire", genre: "Симуляторы", bg: "prewiew/72585_1320058224_untitled-2.jpg", game: "games/handlessmillionaire.swf", rating: 4.2, ratingText: "4.2/5", year: 2011, desc: "Симулятор жизни без рук." },
+            
+            { id: "zombotron", name: "Zombotron", genre: "Экшн", bg: "prewiew/zombotron.jpg", game: "games/575535_Zombotron.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Динамичный шутер про выживание на планете зомби." },
+            
+            { id: "alientransporter", name: "Alien Transporter", genre: "Аркада", bg: "prewiew/alientransporter.jpg", game: "games/AlienTransporter.swf", rating: 4.3, ratingText: "4.3/5", year: 2008, desc: "Перевози пришельцев через опасные уровни." },
+            
             { id: "strikeforce", name: "Strike Force Heroes", genre: "Экшн", bg: "prewiew/strike-force-heroes_1x1.png", game: "games/strike-force-heroes.swf", rating: 4.8, ratingText: "4.8/5", year: 2012, desc: "Динамичный шутер с ролевыми элементами." },
+            
             { id: "avatar", name: "Avatar Fortress Fight", genre: "Экшн", bg: "prewiew/avatar-fortress-fight-2-v0-t0uckpyyxr861.webp", game: "games/Avatar_fortress_fight.swf", rating: 4.3, ratingText: "4.3/5", year: 2011, desc: "Сражения аватаров в крепости!" },
-            { id: "badicecream", name: "Bad Icecream", genre: "Аркада На двоих", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", game: "games/Bad_Icecream.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Весёлая аркада про мороженое!" },
+            
             { id: "counterterror", name: "Counter Terror", genre: "Экшн На двоих", bg: "prewiew/flash_611754_card.webp", game: "games/counter_terror.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Тактический шутер против террористов." },
+            
             { id: "superfighters", name: "Superfighters", genre: "Экшн На двоих", bg: "prewiew/superfighters.jpg", game: "games/superfighters.swf", rating: 4.9, ratingText: "4.9/5", year: 2011, desc: "Безумный файтинг с оружием!" },
+            
             { id: "tanktrouble", name: "Tank Trouble", genre: "Экшн На двоих", bg: "prewiew/images.png", game: "games/tank_trouble.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Танковая битва в лабиринте!" }
         ];
         
         const searchOnlyGames = [
+            // Douchebag
             { id: "douchebag1_search", name: "Douchebag 1", genre: "Симуляторы", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", isSearchOnly: true },
             { id: "douchebag2_search", name: "Douchebag 2", genre: "Симуляторы", bg: "prewiew/maxresdefault.jpg", game: "games/Douchebag_2.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!", isSearchOnly: true },
+            
+            // Gun Mayhem
             { id: "gunmayhem1_search", name: "Gun Mayhem 1", genre: "Экшн На двоих", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", isSearchOnly: true },
             { id: "gunmayhem2_search", name: "Gun Mayhem 2", genre: "Экшн На двоих", bg: "prewiew/unnamed.jpg", game: "games/Gun Mayhem 2 More Mayhem.swf", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!", isSearchOnly: true },
+            
+            // Cactus McCoy
             { id: "cactusmccoy1_search", name: "Cactus McCoy 1", genre: "Экшн", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", isSearchOnly: true },
             { id: "cactusmccoy2_search", name: "Cactus McCoy 2", genre: "Экшн", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", game: "games/581019_cactusmccoy2.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!", isSearchOnly: true },
+            
+            // Feed Us
             { id: "feedus1_search", name: "Feed Us 1", genre: "Аркада", bg: "prewiew/maxresdefault (1).jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Классическая первая часть.", isSearchOnly: true },
             { id: "feedus2_search", name: "Feed Us 2", genre: "Аркада", bg: "prewiew/feed-us-2.png", game: "games/feed-us-2.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть аркады!", isSearchOnly: true },
             { id: "feedus3_search", name: "Feed Us 3", genre: "Аркада", bg: "prewiew/Без названия.jpg", game: "games/FeedUs3.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!", isSearchOnly: true },
             { id: "feedus4_search", name: "Feed Us 4", genre: "Аркада", bg: "prewiew/feedus-4-chains.png", game: "games/feedus4.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Четвёртая часть!", isSearchOnly: true },
             { id: "feedus5_search", name: "Feed Us 5", genre: "Аркада", bg: "prewiew/Без названия (1).jpg", game: "games/feedus5.swf", rating: 4.8, ratingText: "4.8/5", year: 2015, desc: "Пятая часть!", isSearchOnly: true },
             { id: "feeduslost_search", name: "Feed Us Lost Island", genre: "Аркада", bg: "prewiew/images (2).jpg", game: "games/feedus-lostisland.swf", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!", isSearchOnly: true },
-            { id: "waterfire2_search", name: "Water and Fire 2", genre: "Головоломка На двоих", bg: "prewiew/images.jpg", game: "games/water_and_fire_2.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Вторая часть головоломки!", isSearchOnly: true }
+            
+            // Sushi Cat
+            { id: "sushicat1_search", name: "Sushi Cat 1", genre: "Аркада", bg: "prewiew/sushicat.jpg", game: "games/SushiCat.swf", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Классическая первая часть!", isSearchOnly: true },
+            { id: "sushicat2_search", name: "Sushi Cat 2", genre: "Аркада", bg: "prewiew/sushicat2.jpg", game: "games/sushicat2.swf", rating: 4.7, ratingText: "4.7/5", year: 2011, desc: "Вторая часть!", isSearchOnly: true },
+            { id: "sushicat2purrade_search", name: "Sushi Cat 2: The Great Purrade", genre: "Аркада", bg: "prewiew/sushicat2purrade.jpg", game: "games/sushicat2thegreatpurrade.swf", rating: 4.8, ratingText: "4.8/5", year: 2012, desc: "Специальное издание!", isSearchOnly: true },
+            { id: "sushicathoneymoon_search", name: "Sushi Cat: The Honeymoon", genre: "Аркада", bg: "prewiew/sushicat_honeymoon.jpg", game: "games/sushicatthehoneymoon.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Медовый месяц!", isSearchOnly: true },
+            { id: "sushicatapult_search", name: "Sushi Catapult", genre: "Аркада", bg: "prewiew/sushicatapult.jpg", game: "games/sushicatapult.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Котопульт!", isSearchOnly: true },
+            
+            // Skywire
+            { id: "skywire1_search", name: "Skywire 1", genre: "Аркада", bg: "prewiew/skywire.jpg", game: "games/Skywire - A Free Game by Nitrome.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Классическая аркада!", isSearchOnly: true },
+            { id: "skywire2_search", name: "Skywire 2", genre: "Аркада", bg: "prewiew/skywire2.jpg", game: "games/Skywire_2.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение!", isSearchOnly: true },
+            
+            // Bad Ice Cream
+            { id: "badicecream2_search", name: "Bad Ice Cream 2", genre: "Аркада На двоих", bg: "prewiew/badicecream2.jpg", game: "games/bad_ice_cream_2.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть!", isSearchOnly: true },
+            { id: "badicecream3_search", name: "Bad Ice Cream 3", genre: "Аркада На двоих", bg: "prewiew/badicecream3.jpg", game: "games/bad_ice_cream_3.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!", isSearchOnly: true },
+            
+            // Water and Fire
+            { id: "waterfire1_search", name: "Water and Fire 1", genre: "Головоломка На двоих", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/Fireboy & Watergirl1.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Первая часть!", isSearchOnly: true },
+            { id: "waterfire2_search", name: "Water and Fire 2", genre: "Головоломка На двоих", bg: "prewiew/images.jpg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Вторая часть!", isSearchOnly: true },
+            { id: "waterfire3_search", name: "Water and Fire 3", genre: "Головоломка На двоих", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire_2.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Третья часть!", isSearchOnly: true },
+            { id: "waterfire4_search", name: "Water and Fire 4", genre: "Головоломка На двоих", bg: "prewiew/fireboywatergirl4.jpg", game: "games/FireBoyAndWaterGirl4_KONG.swf", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Четвёртая часть!", isSearchOnly: true },
+            
+            // Bomb It
+            { id: "bombit1_search", name: "Bomb It 1", genre: "Аркада", bg: "prewiew/bombit1.jpg", game: "games/Bomb It 1.swf", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Первая часть!", isSearchOnly: true },
+            { id: "bombit2_search", name: "Bomb It 2", genre: "Аркада", bg: "prewiew/bombit2.jpg", game: "games/bombit2.swf", rating: 4.5, ratingText: "4.5/5", year: 2010, desc: "Вторая часть!", isSearchOnly: true },
+            { id: "bombit3_search", name: "Bomb It 3", genre: "Аркада", bg: "prewiew/bombit3.jpg", game: "games/bombit3.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Третья часть!", isSearchOnly: true },
+            { id: "bombit4_search", name: "Bomb It 4", genre: "Аркада", bg: "prewiew/bombit4.jpg", game: "games/bombit4.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Четвёртая часть!", isSearchOnly: true },
+            
+            // Super Smash Flash
+            { id: "supersmashflash1_search", name: "Super Smash Flash 1", genre: "Файтинг", bg: "prewiew/supersmashflash1.jpg", game: "games/Super Smash Flash.swf", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Первая часть!", isSearchOnly: true },
+            { id: "supersmashflash2_search", name: "Super Smash Flash 2", genre: "Файтинг", bg: "prewiew/supersmashflash2.jpg", game: "games/Super Smash Flash2.swf", rating: 4.9, ratingText: "4.9/5", year: 2012, desc: "Вторая часть!", isSearchOnly: true },
+            
+            // Zombotron
+            { id: "zombotron_search", name: "Zombotron", genre: "Экшн", bg: "prewiew/zombotron.jpg", game: "games/575535_Zombotron.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Динамичный шутер!", isSearchOnly: true },
+            
+            // Alien Transporter
+            { id: "alientransporter_search", name: "Alien Transporter", genre: "Аркада", bg: "prewiew/alientransporter.jpg", game: "games/AlienTransporter.swf", rating: 4.3, ratingText: "4.3/5", year: 2008, desc: "Перевози пришельцев!", isSearchOnly: true }
         ];
         
         const allGamesForWheel = [...mainGamesData, ...searchOnlyGames];
@@ -2410,7 +2532,7 @@
             card.innerHTML = `
                 <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${favoriteId}" data-name="${displayName}" data-bg="${displayBg}" data-game="${displayGamePath}">❤️</button>
                 <div class="image-container" onclick="window.playGameFromCard(this.parentElement)">
-                    <img src="${displayBg}" alt="Превью" loading="lazy" onerror="this.src='prewiew/placeholder.jpg'">
+                    <img src="${displayBg}" alt="Превью" loading="lazy" onerror="this.src='prewiew/HbHNd.png'">
                 </div>
                 <h3>${displayName}</h3>
                 <div class="game-info">
@@ -2663,7 +2785,6 @@
             }
         }
         
-        // Анимация растворения карточки
         function animateCardDissolve(cardElement, gamePath, gameName) {
             if (performanceMode) {
                 playGame(gamePath, gameName);
@@ -2684,15 +2805,12 @@
             
             document.body.appendChild(clone);
             
-            // Плавно скрываем основной контент
             const siteContent = document.getElementById('siteContent');
             siteContent.classList.add('fade-out-site');
             
-            // Скрываем оригинальную карточку
             cardElement.style.opacity = '0';
             cardElement.style.visibility = 'hidden';
             
-            // Запускаем игру после анимации
             setTimeout(() => {
                 clone.remove();
                 cardElement.style.opacity = '';
@@ -2702,7 +2820,6 @@
         }
         
         function unloadSiteForGame() {
-            // Сайт уже скрыт через fade-out-site, просто скрываем элементы управления
             const scrollTop = document.getElementById('scrollTopBtn');
             if (scrollTop) scrollTop.style.display = 'none';
             const randomGame = document.getElementById('randomGameBtn');
@@ -2764,7 +2881,6 @@
             const playerDiv = document.getElementById('ruffle-player');
             const gameTitleSpan = document.getElementById('gameTitle');
             
-            // Показываем загрузку с плавным появлением
             showLoading();
             gameTitleSpan.innerHTML = `🎮 ${gameName}`;
             
@@ -2773,7 +2889,6 @@
                 currentPlayer = null;
             }
             
-            // Плавно показываем контейнер игры
             setTimeout(() => container.classList.add('active'), 100);
             document.body.style.overflow = 'hidden';
             
@@ -2788,6 +2903,19 @@
                 currentPlayer.style.width = '100%';
                 currentPlayer.style.height = '100%';
                 playerDiv.appendChild(currentPlayer);
+                
+                // Обход URL Lock для Nitrome игр
+                if (gamePath.includes('nitromemustdie') || gamePath.includes('skywire') || gamePath.includes('sushicatapult')) {
+                    setTimeout(() => {
+                        const canvas = document.querySelector('#ruffle-player canvas');
+                        if (canvas) {
+                            canvas.style.width = '100%';
+                            canvas.style.height = '100%';
+                            canvas.style.objectFit = 'contain';
+                        }
+                    }, 200);
+                }
+                
                 const loadPromise = currentPlayer.load(gamePath);
                 currentLoadPromise = loadPromise;
                 await Promise.race([loadPromise, new Promise((_, reject) => setTimeout(() => reject(new Error('Таймаут')), 15000))]);
