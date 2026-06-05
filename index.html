@@ -2040,7 +2040,7 @@
             `┌───────┐\n│ ███ █ │\n│ ███ █ │\n│ █████ │\n│ █████ │\n└───┬───┘\n    │`
         ];
         
-        let currentSort = 'default';
+        let currentSort = localStorage.getItem('currentSort') || 'default';
         let currentGamePath = '';
         let currentGameName = '';
         let currentPlayer = null;
@@ -2656,6 +2656,12 @@
         }
         
         function initialRender() {
+            // Восстанавливаем текст кнопки сортировки
+            const sortBtn = document.getElementById('sortBtn');
+            const sortText = document.querySelector(`.sort-dropdown-item[data-sort="${currentSort}"]`);
+            if (sortBtn && sortText) {
+                sortBtn.innerHTML = `📊 ${sortText.textContent} ▼`;
+            }
             renderCurrentPage();
             updateFavoritesUI();
             updateLastPlayedUI();
@@ -2702,6 +2708,8 @@
         document.querySelectorAll('.sort-dropdown-item').forEach(item => {
             item.addEventListener('click', async function() {
                 currentSort = this.getAttribute('data-sort');
+                // Сохраняем выбранную сортировку в localStorage
+                localStorage.setItem('currentSort', currentSort);
                 sortBtn.innerHTML = `📊 ${this.textContent} ▼`;
                 sortDropdown.classList.remove('show');
                 await filterAndRender();
