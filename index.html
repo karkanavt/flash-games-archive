@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Архив старых Flash-игр</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
@@ -13,6 +13,7 @@
             box-sizing: border-box;
         }
 
+        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
         body {
             font-family: 'VT323', 'Courier New', monospace;
             min-height: 100vh;
@@ -50,6 +51,7 @@
             font-size: 14px;
         }
 
+        /* ===== ВИДЕО ФОН ===== */
         .video-background {
             position: fixed;
             top: 0;
@@ -68,6 +70,7 @@
             visibility: hidden;
         }
 
+        /* ===== АНИМАЦИИ ===== */
         .site-content {
             transition: opacity 0.4s ease-out;
             position: relative;
@@ -113,6 +116,7 @@
             animation: none !important;
         }
 
+        /* ===== ПЛЕЕР ===== */
         #game-container {
             position: fixed;
             top: 0;
@@ -255,6 +259,7 @@
             object-fit: contain;
         }
 
+        /* ===== КНОПКИ ===== */
         .scroll-top-btn {
             position: fixed;
             bottom: 30px;
@@ -334,6 +339,7 @@
             transform: none;
         }
 
+        /* ===== КОЛЕСО ФОРТУНЫ ===== */
         .wheel-modal {
             position: fixed;
             top: 0;
@@ -603,6 +609,7 @@
             transform: translateX(-50%) scale(1.02);
         }
 
+        /* ===== ИНДИКАТОР ЗАГРУЗКИ ===== */
         .loading-indicator {
             position: fixed;
             top: 50%;
@@ -641,12 +648,7 @@
             to { transform: rotate(360deg); }
         }
 
-        .fade-out {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-        }
-
+        /* ===== ШАПКА ===== */
         .header {
             background: rgba(13, 13, 13, 0.85);
             padding: 20px;
@@ -674,6 +676,7 @@
             font-style: italic;
         }
 
+        /* ===== ASCII АРТ ===== */
         .ascii-art {
             position: absolute;
             top: 10px;
@@ -688,6 +691,7 @@
             cursor: default;
         }
 
+        /* ===== СТАТИСТИКА ===== */
         .stats-btn {
             position: absolute;
             top: 20px;
@@ -757,6 +761,7 @@
             backdrop-filter: none;
         }
 
+        /* ===== ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМА ===== */
         .performance-toggle {
             position: absolute;
             top: 20px;
@@ -807,6 +812,7 @@
             transform: translateX(19px);
         }
 
+        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
         .main-container {
             display: flex;
             gap: 30px;
@@ -815,6 +821,7 @@
             margin: 0 auto;
         }
 
+        /* ===== БОКОВАЯ ПАНЕЛЬ ===== */
         .filters-sidebar {
             width: 260px;
             flex-shrink: 0;
@@ -858,6 +865,7 @@
             border-color: #8B0000;
         }
 
+        /* ===== ИЗБРАННОЕ И ИСТОРИЯ ===== */
         .favorites-section, .last-played-section {
             margin-top: 20px;
             padding: 12px;
@@ -1057,6 +1065,7 @@
             font-size: 12px;
         }
 
+        /* ===== ПОЛЗУНОК СЕТКИ ===== */
         .grid-control {
             margin-top: 15px;
             text-align: center;
@@ -1103,6 +1112,7 @@
             border: 2px solid white;
         }
 
+        /* ===== СОРТИРОВКА ===== */
         .sort-section {
             margin-top: 20px;
             position: relative;
@@ -1174,6 +1184,7 @@
             transform: none;
         }
 
+        /* ===== ПОИСК ===== */
         .search-section {
             margin-top: 20px;
             position: relative;
@@ -1256,6 +1267,7 @@
             margin-top: 10px;
         }
 
+        /* ===== СЕТКА ИГР ===== */
         .games-grid {
             flex: 1;
             display: grid;
@@ -1276,6 +1288,7 @@
             grid-template-columns: repeat(5, 1fr);
         }
 
+        /* ===== КАРТОЧКА ИГРЫ ===== */
         .game-card {
             background: rgba(30, 30, 35, 0.75);
             backdrop-filter: blur(8px);
@@ -1529,6 +1542,7 @@
             background: rgba(119, 119, 119, 0.9);
         }
 
+        /* ===== МЕНЮ ВЫБОРА ЧАСТЕЙ ===== */
         .game-card.has-parts {
             position: relative;
             overflow: visible;
@@ -1536,7 +1550,6 @@
         
         .game-parts-menu {
             position: absolute;
-            right: -150px;
             top: 0;
             width: 140px;
             background: rgba(30, 30, 35, 0.98);
@@ -1549,23 +1562,37 @@
             border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             pointer-events: none;
-            backdrop-filter: none;
         }
         
-        body.performance-mode .game-parts-menu {
-            transition: none;
+        .game-parts-menu.right {
+            right: -150px;
+            left: auto;
+        }
+        
+        .game-parts-menu.left {
+            left: -150px;
+            right: auto;
         }
         
         .game-card.has-parts::after {
             content: '';
             position: absolute;
-            right: -20px;
             top: 0;
             width: 30px;
             height: 100%;
             background: transparent;
             z-index: 199;
             pointer-events: auto;
+        }
+        
+        .game-card.has-parts.menu-right::after {
+            right: -20px;
+            left: auto;
+        }
+        
+        .game-card.has-parts.menu-left::after {
+            left: -20px;
+            right: auto;
         }
         
         .game-card.has-parts:hover .game-parts-menu {
@@ -1612,6 +1639,7 @@
             color: white;
         }
 
+        /* ===== ПАГИНАЦИЯ ===== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -1656,119 +1684,124 @@
             cursor: not-allowed;
         }
 
-        @media (max-width: 768px) {
+        /* ===== АДАПТИВНЫЙ ИНТЕРФЕЙС ===== */
+        @media (max-width: 1400px) {
+            .games-grid.cols-5 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .games-grid.cols-5,
+            .games-grid.cols-4 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .game-card .image-container {
+                height: 170px;
+            }
+        }
+        
+        @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
             }
             .filters-sidebar {
                 width: 100%;
             }
-            .filter-btn {
-                display: inline-block;
-                width: auto;
-                margin-right: 8px;
-                margin-bottom: 8px;
+            .games-grid.cols-5,
+            .games-grid.cols-4,
+            .games-grid.cols-3 {
+                grid-template-columns: repeat(3, 1fr);
             }
-            .sort-btn {
-                display: inline-block;
-                width: auto;
-                margin-right: 8px;
-            }
-            .sort-dropdown {
-                bottom: auto;
-                top: 100%;
-                margin-top: 5px;
-                margin-bottom: 0;
-            }
-            .stats-btn {
-                top: auto;
-                left: auto;
-                bottom: 20px;
-                right: 20px;
-                position: fixed;
-                z-index: 100;
-            }
-            .stats-tooltip {
-                top: auto;
-                bottom: 45px;
-                left: auto;
-                right: 0;
-            }
-            .performance-toggle {
-                position: static;
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 10px;
-            }
-            .header {
-                text-align: center;
-            }
-            .ascii-art {
-                display: none;
+            .game-card .image-container {
+                height: 150px;
             }
             .game-card {
-                height: auto;
-                min-height: 360px;
+                padding: 12px;
             }
-            .game-card:hover .game-info {
-                position: relative;
-                top: auto;
-                margin-top: 10px;
-                margin-bottom: 0;
+        }
+        
+        @media (max-width: 700px) {
+            .games-grid.cols-5,
+            .games-grid.cols-4,
+            .games-grid.cols-3 {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .game-parts-menu {
-                position: fixed;
-                top: auto;
-                bottom: 100%;
-                right: auto;
-                left: 0;
-                width: 100%;
-                margin-bottom: 10px;
+            .game-card .image-container {
+                height: 130px;
             }
-            .game-card.has-parts:hover .game-parts-menu {
-                transform: translateY(-10px);
+            .game-card h3 {
+                font-size: 11px;
             }
-            .scroll-top-btn, .random-game-btn {
-                bottom: 20px;
-                width: 38px;
-                height: 38px;
-                font-size: 18px;
+        }
+        
+        @media (max-width: 500px) {
+            .games-grid.cols-5,
+            .games-grid.cols-4,
+            .games-grid.cols-3 {
+                grid-template-columns: repeat(1, 1fr);
             }
-            .scroll-top-btn {
-                right: 20px;
-            }
-            .random-game-btn {
-                left: 20px;
-                font-size: 20px;
-            }
-            .game-card.has-parts::before {
-                width: 28px;
-                height: 28px;
-                font-size: 14px;
-                top: 8px;
-                right: 8px;
-            }
-            .favorite-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 14px;
-                top: 8px;
-                left: 8px;
-            }
-            .favorites-section, .last-played-section {
-                display: inline-block;
-                width: calc(50% - 10px);
-                margin-right: 10px;
-                vertical-align: top;
+            .game-card .image-container {
+                height: 180px;
             }
             .filters-sidebar {
                 display: flex;
                 flex-wrap: wrap;
-                gap: 15px;
+                gap: 10px;
             }
             .filters-sidebar > * {
-                flex: 1;
-                min-width: 150px;
+                min-width: 120px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .game-parts-menu {
+                position: fixed;
+                top: auto;
+                bottom: 100%;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .game-card.has-parts::after {
+                display: none;
+            }
+            .game-card.has-parts:hover .game-parts-menu {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .wheel-container {
+                width: 90%;
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+            .wheel-container canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+            .case-container {
+                width: 90%;
+                padding: 15px;
+            }
+            .slot-machine {
+                height: 200px;
+            }
+            .slot-item {
+                height: 200px;
+            }
+            .slot-item img {
+                width: 120px;
+                height: 90px;
+            }
+            .player-bar {
+                padding: 8px 12px;
+            }
+            .close-btn, .fullscreen-btn, .restart-btn {
+                padding: 4px 8px;
+                font-size: 10px;
             }
         }
     </style>
@@ -1857,7 +1890,7 @@
             <div class="search-section">
                 <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск игр...">
                 <div id="searchDropdown" class="search-dropdown"></div>
-                <div id="gameCount" class="game-count">Всего игр: 27</div>
+                <div id="gameCount" class="game-count">Всего игр: 31</div>
             </div>
         </div>
 
@@ -1920,6 +1953,7 @@
         let totalSiteTime = parseInt(localStorage.getItem('totalSiteTime') || '0');
         let siteTimerInterval = null;
         
+        // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
         function formatTotalTime(seconds) {
             const hrs = Math.floor(seconds / 3600);
             const mins = Math.floor((seconds % 3600) / 60);
@@ -2040,6 +2074,7 @@
             `┌───────┐\n│ ███ █ │\n│ ███ █ │\n│ █████ │\n│ █████ │\n└───┬───┘\n    │`
         ];
         
+        // ===== ПЕРЕМЕННЫЕ =====
         let currentSort = localStorage.getItem('currentSort') || 'default';
         let currentGamePath = '';
         let currentGameName = '';
@@ -2057,6 +2092,7 @@
         let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
         let lastPlayed = JSON.parse(localStorage.getItem('lastPlayed') || 'null');
         
+        // ===== ФУНКЦИИ ДЛЯ ИЗБРАННОГО И ИСТОРИИ =====
         function saveFavorites() {
             localStorage.setItem('favorites', JSON.stringify(favorites));
             updateFavoritesUI();
@@ -2171,6 +2207,7 @@
             });
         }
         
+        // ===== РЕЖИМ ПРОИЗВОДИТЕЛЬНОСТИ =====
         function setPerformanceMode(enabled) {
             if (enabled) {
                 document.body.classList.add('performance-mode');
@@ -2199,8 +2236,7 @@
             }, 50);
         }
         
-        // ========== ВСЕ ИГРЫ ==========
-        
+        // ===== БАЗА ДАННЫХ ИГР =====
         const mainGamesData = [
             // Douchebag (2 части)
             { id: "douchebag", name: "Douchebag", genre: "Симуляторы Серии игр", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", hasParts: true,
@@ -2209,7 +2245,6 @@
                 { name: "Douchebag 2", game: "games/Douchebag_2.swf", bg: "prewiew/maxresdefault.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!" }
               ] 
             },
-            
             // Gun Mayhem (2 части)
             { id: "gunmayhem", name: "Gun Mayhem", genre: "Экшн На двоих Серии игр", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", hasParts: true,
               parts: [
@@ -2217,7 +2252,6 @@
                 { name: "Gun Mayhem 2", game: "games/Gun Mayhem 2 More Mayhem.swf", bg: "prewiew/unnamed.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!" }
               ] 
             },
-            
             // Cactus McCoy (2 части)
             { id: "cactusmccoy", name: "Cactus McCoy", genre: "Экшн Серии игр", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", hasParts: true,
               parts: [
@@ -2225,7 +2259,6 @@
                 { name: "Cactus McCoy 2", game: "games/581019_cactusmccoy2.swf", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!" }
               ] 
             },
-            
             // Feed Us (6 частей)
             { id: "feedus", name: "Feed Us", genre: "Аркада Серии игр", bg: "prewiew/feedus.jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Играй за пиранью!", hasParts: true,
               parts: [
@@ -2237,7 +2270,6 @@
                 { name: "Feed Us Lost Island", game: "games/feedus-lostisland.swf", bg: "prewiew/images (2).jpg", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!" }
               ] 
             },
-            
             // Sushi Cat (5 частей + катапульт)
             { id: "sushicat", name: "Sushi Cat", genre: "Аркада Серии игр", bg: "prewiew/sushicat.jpg", game: "games/SushiCat.swf", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Весёлая аркада про кота, который любит суши!", hasParts: true,
               parts: [
@@ -2248,7 +2280,6 @@
                 { name: "Sushi Catapult", game: "games/sushicatapult.swf", bg: "prewiew/sushicatapult.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Котопульт! Запускай кота из катапульты и собирай суши в воздухе." }
               ] 
             },
-            
             // Skywire (2 части)
             { id: "skywire", name: "Skywire", genre: "Аркада Серии игр", bg: "prewiew/skywire.jpg", game: "games/Skywire - A Free Game by Nitrome.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Классическая аркада от Nitrome!", hasParts: true,
               parts: [
@@ -2256,17 +2287,7 @@
                 { name: "Skywire 2", game: "games/Skywire_2.swf", bg: "prewiew/skywire2.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение! Ещё более опасные рельсы!" }
               ] 
             },
-            
-            // Bad Ice Cream (3 части)
-            { id: "badicecream", name: "Bad Ice Cream", genre: "Аркада На двоих Серии игр", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", game: "games/Bad_Icecream.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Весёлая аркада про мороженое!", hasParts: true,
-              parts: [
-                { name: "Bad Ice Cream 1", game: "games/Bad_Icecream.swf", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Классическая первая часть!" },
-                { name: "Bad Ice Cream 2", game: "games/bad_ice_cream_2.swf", bg: "prewiew/badicecream2.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть! Новые уровни и фрукты." },
-                { name: "Bad Ice Cream 3", game: "games/bad_ice_cream_3.swf", bg: "prewiew/badicecream3.jpg", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть! Ещё больше льда и веселья!" }
-              ] 
-            },
-            
-            // Water and Fire (4 части: 1, 2, 3, 4)
+            // Water and Fire (4 части)
             { id: "waterfire", name: "Water and Fire", genre: "Головоломка На двоих Серии игр", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка про стихии.", hasParts: true,
               parts: [
                 { name: "Water and Fire 1", game: "games/Fireboy & Watergirl1.swf", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Первая часть! Управляйте водой и огнём вместе." },
@@ -2275,8 +2296,15 @@
                 { name: "Water and Fire 4", game: "games/FireBoyAndWaterGirl4_KONG.swf", bg: "prewiew/fireboywatergirl4.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Четвёртая часть! Новые механики и кристаллы." }
               ] 
             },
-            
-            // Bomb It (4 части в правильном порядке)
+            // Bad Ice Cream (3 части)
+            { id: "badicecream", name: "Bad Ice Cream", genre: "Аркада На двоих Серии игр", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", game: "games/Bad_Icecream.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Весёлая аркада про мороженое!", hasParts: true,
+              parts: [
+                { name: "Bad Ice Cream 1", game: "games/Bad_Icecream.swf", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Классическая первая часть!" },
+                { name: "Bad Ice Cream 2", game: "games/bad_ice_cream_2.swf", bg: "prewiew/badicecream2.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть! Новые уровни и фрукты." },
+                { name: "Bad Ice Cream 3", game: "games/bad_ice_cream_3.swf", bg: "prewiew/badicecream3.jpg", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть! Ещё больше льда и веселья!" }
+              ] 
+            },
+            // Bomb It (4 части)
             { id: "bombit", name: "Bomb It", genre: "Аркада Экшн Серии игр", bg: "prewiew/bombit.jpg", game: "games/Bomb It 1.swf", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Динамичная аркада про бомбы!", hasParts: true,
               parts: [
                 { name: "Bomb It 1", game: "games/Bomb It 1.swf", bg: "prewiew/bombit1.jpg", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Первая часть! Ставь бомбы и уничтожай врагов." },
@@ -2285,7 +2313,6 @@
                 { name: "Bomb It 4", game: "games/bombit4.swf", bg: "prewiew/bombit4.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Четвёртая часть! Финальная битва." }
               ] 
             },
-            
             // Super Smash Flash (2 части)
             { id: "supersmashflash", name: "Super Smash Flash", genre: "Файтинг Экшн Серии игр", bg: "prewiew/supersmashflash.jpg", game: "games/Super Smash Flash.swf", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Фанатский кроссовер-файтинг!", hasParts: true,
               parts: [
@@ -2293,105 +2320,65 @@
                 { name: "Super Smash Flash 2", game: "games/Super Smash Flash2.swf", bg: "prewiew/supersmashflash2.jpg", rating: 4.9, ratingText: "4.9/5", year: 2012, desc: "Вторая часть! Ещё больше персонажей и атак!" }
               ] 
             },
-            
-            // ОДИНОЧНЫЕ ИГРЫ
-            
-            { id: "nitromemustdie", name: "Nitrome Must Die", genre: "Экшн", bg: "prewiew/nitromemustdie.jpg", game: "games/nitromemustdie.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Безумный экшн от Nitrome! Прорывайся через уровни с кучей врагов." },
-            
-            { id: "mutantcat", name: "Mutant Fighting Cup 2016 - Cat Edition", genre: "Экшн На двоих", bg: "prewiew/mutantcat.jpg", game: "games/mutant-fighting-cup-2016-cat-edition.swf", rating: 4.3, ratingText: "4.3/5", year: 2016, desc: "Битвы мутантов-котов! Выбирай бойца и сражайся с друзьями." },
-            
-            { id: "murder", name: "Murder", genre: "Экшн", bg: "prewiew/unnamed.png", game: "games/murder.swf", rating: 4.3, ratingText: "4.3/5", year: 2010, desc: "Жестокий экшн с элементами скрытности." },
-            
-            { id: "torture", name: "Torture", genre: "Симуляторы", bg: "prewiew/g-080619-tec-tortureGame.webp", game: "games/torture_3.swf", rating: 3.8, ratingText: "3.8/5", year: 2009, desc: "Симулятор пыток." },
-            
-            { id: "effingworms", name: "Effing Worms", genre: "Аркада", bg: "prewiew/effingworms.jpg", game: "games/EffingWorms.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Играй за червя, поедай всё на своём пути!" },
-            
-            { id: "bashcomputer", name: "Bash the Computer", genre: "Аркада", bg: "prewiew/bashcomputer.jpg", game: "games/bash-the-computer.swf", rating: 4.2, ratingText: "4.2/5", year: 2009, desc: "Вымести злость на компьютере!" },
-            
-            { id: "therightmix", name: "The Right Mix", genre: "Головоломка", bg: "prewiew/therightmix.jpg", game: "games/flash_therightmix.swf", rating: 4.1, ratingText: "4.1/5", year: 2011, desc: "Музыкальная головоломка." },
-            
-            { id: "meatboy", name: "Meat Boy", genre: "Аркада", bg: "prewiew/meatboy.jpg", game: "games/meatboy.swf", rating: 4.9, ratingText: "4.9/5", year: 2010, desc: "Легендарная аркада!" },
-            
-            { id: "mutiliatedoll", name: "Mutilate a Doll 2", genre: "Симуляторы", bg: "prewiew/HbHNd.png", game: "games/164481_mutilate-a-doll-2_v4.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Симулятор разрушения куклы." },
-            
-            { id: "handlessmillionaire", name: "Handless Millionaire", genre: "Симуляторы", bg: "prewiew/72585_1320058224_untitled-2.jpg", game: "games/handlessmillionaire.swf", rating: 4.2, ratingText: "4.2/5", year: 2011, desc: "Симулятор жизни без рук." },
-            
+            // Одиночные игры
+            { id: "nitromemustdie", name: "Nitrome Must Die", genre: "Экшн", bg: "prewiew/nitromemustdie.jpg", game: "games/nitromemustdie.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Безумный экшн от Nitrome!" },
+            { id: "mutantcat", name: "Mutant Fighting Cup 2016 - Cat Edition", genre: "Экшн На двоих", bg: "prewiew/mutantcat.jpg", game: "games/mutant-fighting-cup-2016-cat-edition.swf", rating: 4.3, ratingText: "4.3/5", year: 2016, desc: "Битвы мутантов-котов!" },
             { id: "zombotron", name: "Zombotron", genre: "Экшн", bg: "prewiew/zombotron.jpg", game: "games/575535_Zombotron.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Динамичный шутер про выживание на планете зомби." },
-            
             { id: "alientransporter", name: "Alien Transporter", genre: "Аркада", bg: "prewiew/alientransporter.jpg", game: "games/AlienTransporter.swf", rating: 4.3, ratingText: "4.3/5", year: 2008, desc: "Перевози пришельцев через опасные уровни." },
-            
+            { id: "murder", name: "Murder", genre: "Экшн", bg: "prewiew/unnamed.png", game: "games/murder.swf", rating: 4.3, ratingText: "4.3/5", year: 2010, desc: "Жестокий экшн с элементами скрытности." },
+            { id: "torture", name: "Torture", genre: "Симуляторы", bg: "prewiew/g-080619-tec-tortureGame.webp", game: "games/torture_3.swf", rating: 3.8, ratingText: "3.8/5", year: 2009, desc: "Симулятор пыток." },
+            { id: "effingworms", name: "Effing Worms", genre: "Аркада", bg: "prewiew/effingworms.jpg", game: "games/EffingWorms.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Играй за червя, поедай всё на своём пути!" },
+            { id: "bashcomputer", name: "Bash the Computer", genre: "Аркада", bg: "prewiew/bashcomputer.jpg", game: "games/bash-the-computer.swf", rating: 4.2, ratingText: "4.2/5", year: 2009, desc: "Вымести злость на компьютере!" },
+            { id: "therightmix", name: "The Right Mix", genre: "Головоломка", bg: "prewiew/therightmix.jpg", game: "games/flash_therightmix.swf", rating: 4.1, ratingText: "4.1/5", year: 2011, desc: "Музыкальная головоломка." },
+            { id: "meatboy", name: "Meat Boy", genre: "Аркада", bg: "prewiew/meatboy.jpg", game: "games/meatboy.swf", rating: 4.9, ratingText: "4.9/5", year: 2010, desc: "Легендарная аркада!" },
+            { id: "mutiliatedoll", name: "Mutilate a Doll 2", genre: "Симуляторы", bg: "prewiew/HbHNd.png", game: "games/164481_mutilate-a-doll-2_v4.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Симулятор разрушения куклы." },
+            { id: "handlessmillionaire", name: "Handless Millionaire", genre: "Симуляторы", bg: "prewiew/72585_1320058224_untitled-2.jpg", game: "games/handlessmillionaire.swf", rating: 4.2, ratingText: "4.2/5", year: 2011, desc: "Симулятор жизни без рук." },
             { id: "strikeforce", name: "Strike Force Heroes", genre: "Экшн", bg: "prewiew/strike-force-heroes_1x1.png", game: "games/strike-force-heroes.swf", rating: 4.8, ratingText: "4.8/5", year: 2012, desc: "Динамичный шутер с ролевыми элементами." },
-            
             { id: "avatar", name: "Avatar Fortress Fight", genre: "Экшн", bg: "prewiew/avatar-fortress-fight-2-v0-t0uckpyyxr861.webp", game: "games/Avatar_fortress_fight.swf", rating: 4.3, ratingText: "4.3/5", year: 2011, desc: "Сражения аватаров в крепости!" },
-            
             { id: "counterterror", name: "Counter Terror", genre: "Экшн На двоих", bg: "prewiew/flash_611754_card.webp", game: "games/counter_terror.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Тактический шутер против террористов." },
-            
             { id: "superfighters", name: "Superfighters", genre: "Экшн На двоих", bg: "prewiew/superfighters.jpg", game: "games/superfighters.swf", rating: 4.9, ratingText: "4.9/5", year: 2011, desc: "Безумный файтинг с оружием!" },
-            
             { id: "tanktrouble", name: "Tank Trouble", genre: "Экшн На двоих", bg: "prewiew/images.png", game: "games/tank_trouble.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Танковая битва в лабиринте!" }
         ];
         
         const searchOnlyGames = [
-            // Douchebag
             { id: "douchebag1_search", name: "Douchebag 1", genre: "Симуляторы", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", isSearchOnly: true },
             { id: "douchebag2_search", name: "Douchebag 2", genre: "Симуляторы", bg: "prewiew/maxresdefault.jpg", game: "games/Douchebag_2.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!", isSearchOnly: true },
-            
-            // Gun Mayhem
             { id: "gunmayhem1_search", name: "Gun Mayhem 1", genre: "Экшн На двоих", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", isSearchOnly: true },
             { id: "gunmayhem2_search", name: "Gun Mayhem 2", genre: "Экшн На двоих", bg: "prewiew/unnamed.jpg", game: "games/Gun Mayhem 2 More Mayhem.swf", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!", isSearchOnly: true },
-            
-            // Cactus McCoy
             { id: "cactusmccoy1_search", name: "Cactus McCoy 1", genre: "Экшн", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", isSearchOnly: true },
             { id: "cactusmccoy2_search", name: "Cactus McCoy 2", genre: "Экшн", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", game: "games/581019_cactusmccoy2.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!", isSearchOnly: true },
-            
-            // Feed Us
             { id: "feedus1_search", name: "Feed Us 1", genre: "Аркада", bg: "prewiew/maxresdefault (1).jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Классическая первая часть.", isSearchOnly: true },
             { id: "feedus2_search", name: "Feed Us 2", genre: "Аркада", bg: "prewiew/feed-us-2.png", game: "games/feed-us-2.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть аркады!", isSearchOnly: true },
             { id: "feedus3_search", name: "Feed Us 3", genre: "Аркада", bg: "prewiew/Без названия.jpg", game: "games/FeedUs3.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!", isSearchOnly: true },
             { id: "feedus4_search", name: "Feed Us 4", genre: "Аркада", bg: "prewiew/feedus-4-chains.png", game: "games/feedus4.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Четвёртая часть!", isSearchOnly: true },
             { id: "feedus5_search", name: "Feed Us 5", genre: "Аркада", bg: "prewiew/Без названия (1).jpg", game: "games/feedus5.swf", rating: 4.8, ratingText: "4.8/5", year: 2015, desc: "Пятая часть!", isSearchOnly: true },
             { id: "feeduslost_search", name: "Feed Us Lost Island", genre: "Аркада", bg: "prewiew/images (2).jpg", game: "games/feedus-lostisland.swf", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!", isSearchOnly: true },
-            
-            // Sushi Cat
             { id: "sushicat1_search", name: "Sushi Cat 1", genre: "Аркада", bg: "prewiew/sushicat.jpg", game: "games/SushiCat.swf", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Классическая первая часть!", isSearchOnly: true },
             { id: "sushicat2_search", name: "Sushi Cat 2", genre: "Аркада", bg: "prewiew/sushicat2.jpg", game: "games/sushicat2.swf", rating: 4.7, ratingText: "4.7/5", year: 2011, desc: "Вторая часть!", isSearchOnly: true },
             { id: "sushicat2purrade_search", name: "Sushi Cat 2: The Great Purrade", genre: "Аркада", bg: "prewiew/sushicat2purrade.jpg", game: "games/sushicat2thegreatpurrade.swf", rating: 4.8, ratingText: "4.8/5", year: 2012, desc: "Специальное издание!", isSearchOnly: true },
             { id: "sushicathoneymoon_search", name: "Sushi Cat: The Honeymoon", genre: "Аркада", bg: "prewiew/sushicat_honeymoon.jpg", game: "games/sushicatthehoneymoon.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Медовый месяц!", isSearchOnly: true },
             { id: "sushicatapult_search", name: "Sushi Catapult", genre: "Аркада", bg: "prewiew/sushicatapult.jpg", game: "games/sushicatapult.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Котопульт!", isSearchOnly: true },
-            
-            // Skywire
             { id: "skywire1_search", name: "Skywire 1", genre: "Аркада", bg: "prewiew/skywire.jpg", game: "games/Skywire - A Free Game by Nitrome.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Классическая аркада!", isSearchOnly: true },
             { id: "skywire2_search", name: "Skywire 2", genre: "Аркада", bg: "prewiew/skywire2.jpg", game: "games/Skywire_2.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение!", isSearchOnly: true },
-            
-            // Bad Ice Cream
-            { id: "badicecream2_search", name: "Bad Ice Cream 2", genre: "Аркада На двоих", bg: "prewiew/badicecream2.jpg", game: "games/bad_ice_cream_2.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть!", isSearchOnly: true },
-            { id: "badicecream3_search", name: "Bad Ice Cream 3", genre: "Аркада На двоих", bg: "prewiew/badicecream3.jpg", game: "games/bad_ice_cream_3.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!", isSearchOnly: true },
-            
-            // Water and Fire
             { id: "waterfire1_search", name: "Water and Fire 1", genre: "Головоломка На двоих", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/Fireboy & Watergirl1.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Первая часть!", isSearchOnly: true },
             { id: "waterfire2_search", name: "Water and Fire 2", genre: "Головоломка На двоих", bg: "prewiew/images.jpg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Вторая часть!", isSearchOnly: true },
             { id: "waterfire3_search", name: "Water and Fire 3", genre: "Головоломка На двоих", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire_2.swf", rating: 4.7, ratingText: "4.7/5", year: 2014, desc: "Третья часть!", isSearchOnly: true },
             { id: "waterfire4_search", name: "Water and Fire 4", genre: "Головоломка На двоих", bg: "prewiew/fireboywatergirl4.jpg", game: "games/FireBoyAndWaterGirl4_KONG.swf", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Четвёртая часть!", isSearchOnly: true },
-            
-            // Bomb It
+            { id: "badicecream2_search", name: "Bad Ice Cream 2", genre: "Аркада На двоих", bg: "prewiew/badicecream2.jpg", game: "games/bad_ice_cream_2.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Вторая часть!", isSearchOnly: true },
+            { id: "badicecream3_search", name: "Bad Ice Cream 3", genre: "Аркада На двоих", bg: "prewiew/badicecream3.jpg", game: "games/bad_ice_cream_3.swf", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть!", isSearchOnly: true },
             { id: "bombit1_search", name: "Bomb It 1", genre: "Аркада", bg: "prewiew/bombit1.jpg", game: "games/Bomb It 1.swf", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Первая часть!", isSearchOnly: true },
             { id: "bombit2_search", name: "Bomb It 2", genre: "Аркада", bg: "prewiew/bombit2.jpg", game: "games/bombit2.swf", rating: 4.5, ratingText: "4.5/5", year: 2010, desc: "Вторая часть!", isSearchOnly: true },
             { id: "bombit3_search", name: "Bomb It 3", genre: "Аркада", bg: "prewiew/bombit3.jpg", game: "games/bombit3.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Третья часть!", isSearchOnly: true },
             { id: "bombit4_search", name: "Bomb It 4", genre: "Аркада", bg: "prewiew/bombit4.jpg", game: "games/bombit4.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Четвёртая часть!", isSearchOnly: true },
-            
-            // Super Smash Flash
             { id: "supersmashflash1_search", name: "Super Smash Flash 1", genre: "Файтинг", bg: "prewiew/supersmashflash1.jpg", game: "games/Super Smash Flash.swf", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Первая часть!", isSearchOnly: true },
             { id: "supersmashflash2_search", name: "Super Smash Flash 2", genre: "Файтинг", bg: "prewiew/supersmashflash2.jpg", game: "games/Super Smash Flash2.swf", rating: 4.9, ratingText: "4.9/5", year: 2012, desc: "Вторая часть!", isSearchOnly: true },
-            
-            // Zombotron
             { id: "zombotron_search", name: "Zombotron", genre: "Экшн", bg: "prewiew/zombotron.jpg", game: "games/575535_Zombotron.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Динамичный шутер!", isSearchOnly: true },
-            
-            // Alien Transporter
             { id: "alientransporter_search", name: "Alien Transporter", genre: "Аркада", bg: "prewiew/alientransporter.jpg", game: "games/AlienTransporter.swf", rating: 4.3, ratingText: "4.3/5", year: 2008, desc: "Перевози пришельцев!", isSearchOnly: true }
         ];
         
         const allGamesForWheel = [...mainGamesData, ...searchOnlyGames];
         
+        // ===== ФУНКЦИИ СОРТИРОВКИ =====
         function sortGames(games, sortType) {
             const sorted = [...games];
             switch(sortType) {
@@ -2445,6 +2432,7 @@
             return sortGames(filtered, currentSort);
         }
         
+        // ===== ОБНОВЛЕНИЕ ЧАСТИ ИГРЫ =====
         function updateGamePart(cardElement, gameData, partIndex) {
             const part = gameData.parts[partIndex];
             currentPartsSelection[gameData.id] = partIndex;
@@ -2493,6 +2481,32 @@
             }
         }
         
+        function positionPartsMenu(card) {
+            const menu = card.querySelector('.game-parts-menu');
+            if (!menu) return;
+            
+            card.classList.remove('menu-right', 'menu-left');
+            menu.classList.remove('right', 'left');
+            
+            const windowWidth = window.innerWidth;
+            
+            if (windowWidth <= 768) {
+                return;
+            }
+            
+            const cardRect = card.getBoundingClientRect();
+            const menuWidth = 150;
+            
+            if (cardRect.right + menuWidth + 20 <= windowWidth) {
+                card.classList.add('menu-right');
+                menu.classList.add('right');
+            } else {
+                card.classList.add('menu-left');
+                menu.classList.add('left');
+            }
+        }
+        
+        // ===== СОЗДАНИЕ КАРТОЧКИ =====
         function createGameCard(game) {
             const card = document.createElement('div');
             card.className = 'game-card';
@@ -2572,11 +2586,13 @@
                             updateGamePart(card, game, idx);
                         });
                     });
+                    positionPartsMenu(card);
                 }, 0);
             }
             return card;
         }
         
+        // ===== ПАГИНАЦИЯ =====
         function updatePagination(totalGames) {
             const totalPages = Math.ceil(totalGames / itemsPerPage);
             const paginationDiv = document.getElementById('pagination');
@@ -2656,7 +2672,6 @@
         }
         
         function initialRender() {
-            // Восстанавливаем текст кнопки сортировки
             const sortBtn = document.getElementById('sortBtn');
             const sortText = document.querySelector(`.sort-dropdown-item[data-sort="${currentSort}"]`);
             if (sortBtn && sortText) {
@@ -2668,6 +2683,7 @@
             updateHistoryUI();
         }
         
+        // ===== НАСТРОЙКИ СЕТКИ =====
         const gridSlider = document.getElementById('gridSlider');
         const gridValue = document.getElementById('gridValue');
         const gamesGrid = document.getElementById('gamesGrid');
@@ -2693,6 +2709,7 @@
         setGridCols(defaultCols);
         gridSlider.value = defaultCols;
         
+        // ===== ОБРАБОТЧИКИ СОБЫТИЙ =====
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', async function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -2708,7 +2725,6 @@
         document.querySelectorAll('.sort-dropdown-item').forEach(item => {
             item.addEventListener('click', async function() {
                 currentSort = this.getAttribute('data-sort');
-                // Сохраняем выбранную сортировку в localStorage
                 localStorage.setItem('currentSort', currentSort);
                 sortBtn.innerHTML = `📊 ${this.textContent} ▼`;
                 sortDropdown.classList.remove('show');
@@ -2742,6 +2758,7 @@
             if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) searchDropdown.classList.remove('show');
         });
         
+        // ===== ФУНКЦИИ ДЛЯ ИГРЫ =====
         function showLoading() { 
             const loader = document.getElementById('loadingIndicator');
             loader.classList.add('visible');
@@ -2911,19 +2928,6 @@
                 currentPlayer.style.width = '100%';
                 currentPlayer.style.height = '100%';
                 playerDiv.appendChild(currentPlayer);
-                
-                // Обход URL Lock для Nitrome игр
-                if (gamePath.includes('nitromemustdie') || gamePath.includes('skywire') || gamePath.includes('sushicatapult')) {
-                    setTimeout(() => {
-                        const canvas = document.querySelector('#ruffle-player canvas');
-                        if (canvas) {
-                            canvas.style.width = '100%';
-                            canvas.style.height = '100%';
-                            canvas.style.objectFit = 'contain';
-                        }
-                    }, 200);
-                }
-                
                 const loadPromise = currentPlayer.load(gamePath);
                 currentLoadPromise = loadPromise;
                 await Promise.race([loadPromise, new Promise((_, reject) => setTimeout(() => reject(new Error('Таймаут')), 15000))]);
@@ -3006,7 +3010,7 @@
             else btn.classList.remove('show');
         });
         
-        // КОЛЕСО ФОРТУНЫ
+        // ===== КОЛЕСО ФОРТУНЫ =====
         const wheelModal = document.getElementById('wheelModal');
         const wheelCanvas = document.getElementById('wheelCanvas');
         const ctx = wheelCanvas.getContext('2d');
@@ -3187,6 +3191,40 @@
             spinAnimationWheel = requestAnimationFrame(animateSpin);
         }
         
+        // ===== АДАПТАЦИЯ ИНТЕРФЕЙСА =====
+        function adaptInterfaceToWindowSize() {
+            document.querySelectorAll('.game-card.has-parts').forEach(card => {
+                const menu = card.querySelector('.game-parts-menu');
+                if (menu) {
+                    card.classList.remove('menu-right', 'menu-left');
+                    menu.classList.remove('right', 'left');
+                    
+                    const cardRect = card.getBoundingClientRect();
+                    const menuWidth = 150;
+                    const windowWidth = window.innerWidth;
+                    
+                    if (windowWidth <= 768) {
+                        menu.classList.remove('right', 'left');
+                    } else if (cardRect.right + menuWidth + 20 <= windowWidth) {
+                        card.classList.add('menu-right');
+                        menu.classList.add('right');
+                    } else {
+                        card.classList.add('menu-left');
+                        menu.classList.add('left');
+                    }
+                }
+            });
+        }
+        
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                adaptInterfaceToWindowSize();
+            }, 150);
+        });
+        
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
         const performanceToggle = document.getElementById('performanceToggle');
         performanceToggle.addEventListener('click', () => {
             setPerformanceMode(!performanceMode);
@@ -3228,6 +3266,7 @@
         startSiteTimer();
         setRandomAscii();
         initialRender();
+        setTimeout(adaptInterfaceToWindowSize, 100);
     })();
 </script>
 
