@@ -13,7 +13,6 @@
             box-sizing: border-box;
         }
 
-        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
         body {
             font-family: 'VT323', 'Courier New', monospace;
             min-height: 100vh;
@@ -51,7 +50,6 @@
             font-size: 14px;
         }
 
-        /* ===== ВИДЕО ФОН ===== */
         .video-background {
             position: fixed;
             top: 0;
@@ -70,7 +68,6 @@
             visibility: hidden;
         }
 
-        /* ===== АНИМАЦИИ ===== */
         .site-content {
             transition: opacity 0.4s ease-out;
             position: relative;
@@ -89,34 +86,16 @@
         }
         
         @keyframes dissolveAnimation {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-                filter: blur(0px);
-            }
-            30% {
-                transform: scale(0.95);
-                opacity: 0.7;
-                filter: blur(2px);
-            }
-            60% {
-                transform: scale(0.7);
-                opacity: 0.3;
-                filter: blur(6px);
-            }
-            100% {
-                transform: scale(0.3);
-                opacity: 0;
-                filter: blur(12px);
-                visibility: hidden;
-            }
+            0% { transform: scale(1); opacity: 1; filter: blur(0px); }
+            30% { transform: scale(0.95); opacity: 0.7; filter: blur(2px); }
+            60% { transform: scale(0.7); opacity: 0.3; filter: blur(6px); }
+            100% { transform: scale(0.3); opacity: 0; filter: blur(12px); visibility: hidden; }
         }
         
         body.performance-mode .game-card.anim-dissolve {
             animation: none !important;
         }
 
-        /* ===== ПЛЕЕР ===== */
         #game-container {
             position: fixed;
             top: 0;
@@ -162,12 +141,8 @@
         }
         
         @keyframes slideDownBar {
-            0% {
-                transform: translateY(-100%);
-            }
-            100% {
-                transform: translateY(0);
-            }
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
         }
         
         body.performance-mode .player-bar {
@@ -243,14 +218,8 @@
         }
         
         @keyframes fadeInPlayer {
-            0% {
-                opacity: 0;
-                transform: scale(0.98);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 0; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         #ruffle-player canvas {
@@ -259,7 +228,68 @@
             object-fit: contain;
         }
 
-        /* ===== КНОПКИ ===== */
+        /* Ползунок громкости */
+        .volume-slider-container {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 90px;
+            background: rgba(40, 40, 45, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+            z-index: 1002;
+            transition: opacity 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        
+        #game-container.fullscreen .volume-slider-container {
+            opacity: 0;
+        }
+        
+        #game-container.fullscreen .volume-slider-container:hover {
+            opacity: 1;
+        }
+        
+        .volume-slider {
+            width: 50px;
+            height: 3px;
+            -webkit-appearance: none;
+            background: #555;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            margin: 0;
+            flex-shrink: 0;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #aaa;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb:hover {
+            background: #ccc;
+        }
+        
+        .volume-value {
+            color: #aaa;
+            font-size: 9px;
+            min-width: 25px;
+            text-align: right;
+            font-family: monospace;
+            flex-shrink: 0;
+        }
+
         .scroll-top-btn {
             position: fixed;
             bottom: 30px;
@@ -339,7 +369,6 @@
             transform: none;
         }
 
-        /* ===== КОЛЕСО ФОРТУНЫ ===== */
         .wheel-modal {
             position: fixed;
             top: 0;
@@ -462,14 +491,8 @@
         }
         
         @keyframes cardReveal {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
         
         body.performance-mode .wheel-container.transforming {
@@ -609,7 +632,6 @@
             transform: translateX(-50%) scale(1.02);
         }
 
-        /* ===== ИНДИКАТОР ЗАГРУЗКИ ===== */
         .loading-indicator {
             position: fixed;
             top: 50%;
@@ -648,7 +670,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ===== ШАПКА ===== */
         .header {
             background: rgba(13, 13, 13, 0.85);
             padding: 20px;
@@ -676,7 +697,6 @@
             font-style: italic;
         }
 
-        /* ===== ASCII АРТ ===== */
         .ascii-art {
             position: absolute;
             top: 10px;
@@ -691,7 +711,6 @@
             cursor: default;
         }
 
-        /* ===== СТАТИСТИКА ===== */
         .stats-btn {
             position: absolute;
             top: 20px;
@@ -761,7 +780,6 @@
             backdrop-filter: none;
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМА ===== */
         .performance-toggle {
             position: absolute;
             top: 20px;
@@ -812,7 +830,6 @@
             transform: translateX(19px);
         }
 
-        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
         .main-container {
             display: flex;
             gap: 30px;
@@ -821,7 +838,6 @@
             margin: 0 auto;
         }
 
-        /* ===== БОКОВАЯ ПАНЕЛЬ ===== */
         .filters-sidebar {
             width: 260px;
             flex-shrink: 0;
@@ -865,7 +881,6 @@
             border-color: #8B0000;
         }
 
-        /* ===== ИЗБРАННОЕ И ИСТОРИЯ ===== */
         .favorites-section, .last-played-section {
             margin-top: 20px;
             padding: 12px;
@@ -1065,7 +1080,6 @@
             font-size: 12px;
         }
 
-        /* ===== ПОЛЗУНОК СЕТКИ ===== */
         .grid-control {
             margin-top: 15px;
             text-align: center;
@@ -1112,7 +1126,6 @@
             border: 2px solid white;
         }
 
-        /* ===== СОРТИРОВКА ===== */
         .sort-section {
             margin-top: 20px;
             position: relative;
@@ -1184,7 +1197,6 @@
             transform: none;
         }
 
-        /* ===== ПОИСК ===== */
         .search-section {
             margin-top: 20px;
             position: relative;
@@ -1267,7 +1279,6 @@
             margin-top: 10px;
         }
 
-        /* ===== СЕТКА ИГР ===== */
         .games-grid {
             flex: 1;
             display: grid;
@@ -1288,7 +1299,6 @@
             grid-template-columns: repeat(5, 1fr);
         }
 
-        /* ===== КАРТОЧКА ИГРЫ ===== */
         .game-card {
             background: rgba(30, 30, 35, 0.75);
             backdrop-filter: blur(8px);
@@ -1409,14 +1419,8 @@
         }
 
         @keyframes cardAppear {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
         
         body.performance-mode .game-card.appearing {
@@ -1542,7 +1546,6 @@
             background: rgba(119, 119, 119, 0.9);
         }
 
-        /* ===== МЕНЮ ВЫБОРА ЧАСТЕЙ ===== */
         .game-card.has-parts {
             position: relative;
             overflow: visible;
@@ -1639,7 +1642,6 @@
             color: white;
         }
 
-        /* ===== ПАГИНАЦИЯ ===== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -1684,74 +1686,34 @@
             cursor: not-allowed;
         }
 
-        /* ===== АДАПТИВНЫЙ ИНТЕРФЕЙС ===== */
         @media (max-width: 1400px) {
-            .games-grid.cols-5 {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            .games-grid.cols-5 { grid-template-columns: repeat(4, 1fr); }
         }
         
         @media (max-width: 1200px) {
-            .games-grid.cols-5,
-            .games-grid.cols-4 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .game-card .image-container {
-                height: 170px;
-            }
+            .games-grid.cols-5, .games-grid.cols-4 { grid-template-columns: repeat(3, 1fr); }
+            .game-card .image-container { height: 170px; }
         }
         
         @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column;
-            }
-            .filters-sidebar {
-                width: 100%;
-            }
-            .games-grid.cols-5,
-            .games-grid.cols-4,
-            .games-grid.cols-3 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .game-card .image-container {
-                height: 150px;
-            }
-            .game-card {
-                padding: 12px;
-            }
+            .main-container { flex-direction: column; }
+            .filters-sidebar { width: 100%; }
+            .games-grid.cols-5, .games-grid.cols-4, .games-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .game-card .image-container { height: 150px; }
+            .game-card { padding: 12px; }
         }
         
         @media (max-width: 700px) {
-            .games-grid.cols-5,
-            .games-grid.cols-4,
-            .games-grid.cols-3 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .game-card .image-container {
-                height: 130px;
-            }
-            .game-card h3 {
-                font-size: 11px;
-            }
+            .games-grid.cols-5, .games-grid.cols-4, .games-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+            .game-card .image-container { height: 130px; }
+            .game-card h3 { font-size: 11px; }
         }
         
         @media (max-width: 500px) {
-            .games-grid.cols-5,
-            .games-grid.cols-4,
-            .games-grid.cols-3 {
-                grid-template-columns: repeat(1, 1fr);
-            }
-            .game-card .image-container {
-                height: 180px;
-            }
-            .filters-sidebar {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .filters-sidebar > * {
-                min-width: 120px;
-            }
+            .games-grid.cols-5, .games-grid.cols-4, .games-grid.cols-3 { grid-template-columns: repeat(1, 1fr); }
+            .game-card .image-container { height: 180px; }
+            .filters-sidebar { display: flex; flex-wrap: wrap; gap: 10px; }
+            .filters-sidebar > * { min-width: 120px; }
         }
         
         @media (max-width: 768px) {
@@ -1764,45 +1726,24 @@
                 width: 100%;
                 margin-bottom: 10px;
             }
-            .game-card.has-parts::after {
-                display: none;
-            }
-            .game-card.has-parts:hover .game-parts-menu {
-                transform: translateY(-10px);
-            }
+            .game-card.has-parts::after { display: none; }
+            .game-card.has-parts:hover .game-parts-menu { transform: translateY(-10px); }
         }
         
         @media (max-width: 600px) {
-            .wheel-container {
-                width: 90%;
-                height: auto;
-                aspect-ratio: 1 / 1;
-            }
-            .wheel-container canvas {
-                width: 100% !important;
-                height: auto !important;
-            }
-            .case-container {
-                width: 90%;
-                padding: 15px;
-            }
-            .slot-machine {
-                height: 200px;
-            }
-            .slot-item {
-                height: 200px;
-            }
-            .slot-item img {
-                width: 120px;
-                height: 90px;
-            }
-            .player-bar {
-                padding: 8px 12px;
-            }
-            .close-btn, .fullscreen-btn, .restart-btn {
-                padding: 4px 8px;
-                font-size: 10px;
-            }
+            .wheel-container { width: 90%; height: auto; aspect-ratio: 1 / 1; }
+            .wheel-container canvas { width: 100% !important; height: auto !important; }
+            .case-container { width: 90%; padding: 15px; }
+            .slot-machine { height: 200px; }
+            .slot-item { height: 200px; }
+            .slot-item img { width: 120px; height: 90px; }
+            .player-bar { padding: 8px 12px; }
+            .close-btn, .fullscreen-btn, .restart-btn { padding: 4px 8px; font-size: 10px; }
+        }
+            /* Отключаем проблемные эффекты для Ruffle */
+        #ruffle-player canvas {
+            will-change: auto !important;
+            transform: translateZ(0);
         }
     </style>
 </head>
@@ -1953,6 +1894,192 @@
         let totalSiteTime = parseInt(localStorage.getItem('totalSiteTime') || '0');
         let siteTimerInterval = null;
         
+        // ===== ГРОМКОСТЬ =====
+        let gameVolumeSettings = JSON.parse(localStorage.getItem('gameVolumeSettings') || '{}');
+        
+        function saveVolumeSetting(gameId, volume) {
+            gameVolumeSettings[gameId] = volume;
+            localStorage.setItem('gameVolumeSettings', JSON.stringify(gameVolumeSettings));
+        }
+        
+        function getVolumeSetting(gameId) {
+            const saved = gameVolumeSettings[gameId];
+            return saved !== undefined ? saved : 100;
+        }
+        
+        function createVolumeSlider(gameId) {
+            const container = document.getElementById('game-container');
+            if (!container) return null;
+            
+            const existingSlider = container.querySelector('.volume-slider-container');
+            if (existingSlider) existingSlider.remove();
+            
+            const savedVolume = getVolumeSetting(gameId);
+            
+            const sliderDiv = document.createElement('div');
+            sliderDiv.className = 'volume-slider-container';
+            sliderDiv.innerHTML = `
+                <input type="range" class="volume-slider" min="0" max="100" value="${savedVolume}">
+                <span class="volume-value">${savedVolume}%</span>
+            `;
+            container.appendChild(sliderDiv);
+            
+            const slider = sliderDiv.querySelector('.volume-slider');
+            const valueSpan = sliderDiv.querySelector('.volume-value');
+            
+            slider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                valueSpan.textContent = val + '%';
+                saveVolumeSetting(gameId, parseInt(val));
+                if (currentPlayer && currentPlayer.volume !== undefined) {
+                    currentPlayer.volume = parseInt(val) / 100;
+                } else if (currentPlayer && currentPlayer.setVolume) {
+                    currentPlayer.setVolume(parseInt(val) / 100);
+                }
+            });
+            
+            if (currentPlayer) {
+                try {
+                    if (currentPlayer.volume !== undefined) {
+                        currentPlayer.volume = savedVolume / 100;
+                    } else if (currentPlayer.setVolume) {
+                        currentPlayer.setVolume(savedVolume / 100);
+                    }
+                } catch(e) {}
+            }
+            
+            return sliderDiv;
+        }
+        
+        function updateVolumeForGame(gameId) {
+            const savedVolume = getVolumeSetting(gameId);
+            if (currentPlayer) {
+                try {
+                    if (currentPlayer.volume !== undefined) {
+                        currentPlayer.volume = savedVolume / 100;
+                    } else if (currentPlayer.setVolume) {
+                        currentPlayer.setVolume(savedVolume / 100);
+                    }
+                } catch(e) {}
+            }
+            const valueSpan = document.querySelector('.volume-slider-container .volume-value');
+            const slider = document.querySelector('.volume-slider-container .volume-slider');
+            if (valueSpan) valueSpan.textContent = savedVolume + '%';
+            if (slider) slider.value = savedVolume;
+        }
+        
+        // ===== ПОДДЕРЖКА WASD НА РУССКОЙ РАСКЛАДКЕ =====
+        const keyCodeMap = {
+            'KeyW': ['w', 'ц'],
+            'KeyA': ['a', 'ф'],
+            'KeyS': ['s', 'ы'],
+            'KeyD': ['d', 'в']
+        };
+        
+        function getKeyValue(code, key) {
+            const mapped = keyCodeMap[code];
+            if (mapped && mapped.includes(key)) return mapped[0];
+            return key;
+        }
+        
+          function setupWASDSupport() {
+            // Состояние клавиш - теперь для всех букв
+            const keyState = {
+                'q': false, 'w': false, 'e': false, 'r': false, 't': false, 'y': false, 'u': false, 'i': false, 'o': false, 'p': false,
+                'a': false, 's': false, 'd': false, 'f': false, 'g': false, 'h': false, 'j': false, 'k': false, 'l': false,
+                'z': false, 'x': false, 'c': false, 'v': false, 'b': false, 'n': false, 'm': false,
+                // Русские буквы
+                'й': false, 'ц': false, 'у': false, 'к': false, 'е': false, 'н': false, 'г': false, 'ш': false, 'щ': false, 'з': false,
+                'ф': false, 'ы': false, 'в': false, 'а': false, 'п': false, 'р': false, 'о': false, 'л': false, 'д': false, 'ж': false,
+                'я': false, 'ч': false, 'с': false, 'м': false, 'и': false, 'т': false, 'ь': false, 'б': false, 'ю': false,
+                'ё': false, 'ъ': false, 'э': false, 'х': false
+            };
+            
+            // Соответствие русских букв английским (все буквы)
+            const mapToEnglish = {
+                // Английские буквы (сами себе)
+                'q': 'q', 'w': 'w', 'e': 'e', 'r': 'r', 't': 't', 'y': 'y', 'u': 'u', 'i': 'i', 'o': 'o', 'p': 'p',
+                'a': 'a', 's': 's', 'd': 'd', 'f': 'f', 'g': 'g', 'h': 'h', 'j': 'j', 'k': 'k', 'l': 'l',
+                'z': 'z', 'x': 'x', 'c': 'c', 'v': 'v', 'b': 'b', 'n': 'n', 'm': 'm',
+                // Русские буквы
+                'й': 'q', 'ц': 'w', 'у': 'e', 'к': 'r', 'е': 't', 'н': 'y', 'г': 'u', 'ш': 'i', 'щ': 'o', 'з': 'p',
+                'ф': 'a', 'ы': 's', 'в': 'd', 'а': 'f', 'п': 'g', 'р': 'h', 'о': 'j', 'л': 'k', 'д': 'l', 'ж': ';',
+                'я': 'z', 'ч': 'x', 'с': 'c', 'м': 'v', 'и': 'b', 'т': 'n', 'ь': 'm', 'б': ',', 'ю': '.',
+                'ё': '`', 'ъ': ']', 'э': "'", 'х': '['
+            };
+            
+            // Функция отправки события
+            function sendKeyEvent(type, englishKey) {
+                const event = new KeyboardEvent(type, {
+                    key: englishKey,
+                    code: `Key${englishKey.toUpperCase()}`,
+                    keyCode: englishKey.charCodeAt(0),
+                    which: englishKey.charCodeAt(0),
+                    bubbles: true,
+                    cancelable: true,
+                    composed: true
+                });
+                
+                const canvas = document.querySelector('#ruffle-player canvas');
+                if (canvas && canvas.dispatchEvent) {
+                    canvas.dispatchEvent(event);
+                }
+                document.dispatchEvent(event);
+                window.dispatchEvent(event);
+            }
+            
+            // Функция обновления состояния
+            function updateKeyState(key, isPressed) {
+                const oldState = keyState[key];
+                keyState[key] = isPressed;
+                
+                const englishKey = mapToEnglish[key.toLowerCase()];
+                if (englishKey && oldState !== isPressed) {
+                    const eventType = isPressed ? 'keydown' : 'keyup';
+                    sendKeyEvent(eventType, englishKey);
+                }
+            }
+            
+            // Обработчик нажатия
+            const onKeyDown = (e) => {
+                const key = e.key.toLowerCase();
+                if (mapToEnglish[key] && !keyState[key]) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    updateKeyState(key, true);
+                }
+            };
+            
+            // Обработчик отпускания
+            const onKeyUp = (e) => {
+                const key = e.key.toLowerCase();
+                if (mapToEnglish[key] && keyState[key]) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    updateKeyState(key, false);
+                }
+            };
+            
+            // Сброс всех клавиш
+            function resetAllKeys() {
+                const keys = Object.keys(keyState);
+                keys.forEach(key => {
+                    if (keyState[key]) {
+                        updateKeyState(key, false);
+                    }
+                });
+            }
+            
+            // Удаляем старые обработчики
+            window.removeEventListener('keydown', onKeyDown);
+            window.removeEventListener('keyup', onKeyUp);
+            window.addEventListener('keydown', onKeyDown);
+            window.addEventListener('keyup', onKeyUp);
+            window.addEventListener('blur', resetAllKeys);
+            
+            console.log('Full keyboard support initialized (all keys)');
+        }
+        
         // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
         function formatTotalTime(seconds) {
             const hrs = Math.floor(seconds / 3600);
@@ -2043,25 +2170,39 @@
         function initRuffle() {
             if (ruffleReady) return Promise.resolve(ruffleInstance);
             return new Promise((resolve) => {
-                if (window.RufflePlayer && window.RufflePlayer.newest) {
-                    ruffleInstance = window.RufflePlayer.newest();
-                    ruffleReady = true;
-                    resolve(ruffleInstance);
-                } else {
-                    const checkInterval = setInterval(() => {
-                        if (window.RufflePlayer && window.RufflePlayer.newest) {
-                            clearInterval(checkInterval);
-                            ruffleInstance = window.RufflePlayer.newest();
-                            ruffleReady = true;
-                            resolve(ruffleInstance);
-                        }
-                    }, 50);
-                    setTimeout(() => {
+                const checkInterval = setInterval(() => {
+                    if (window.RufflePlayer && window.RufflePlayer.newest) {
                         clearInterval(checkInterval);
-                        if (!ruffleReady) resolve(null);
-                    }, 3000);
-                }
+                        ruffleInstance = window.RufflePlayer.newest();
+                        try {
+                            if (ruffleInstance && ruffleInstance.config) {
+                                // Отключаем проблемные WebGL фичи
+                                ruffleInstance.config.wgpu = false;
+                                ruffleInstance.config.webgl = false;
+                                ruffleInstance.config.preferredBackend = 'canvas';
+                                ruffleInstance.config.transformFeedback = false;
+                                ruffleInstance.config.maxPointSize = 1;
+                                ruffleInstance.config.frameRate = 30;
+                                ruffleInstance.config.quality = 'low';
+                            }
+                        } catch(e) {}
+                        ruffleReady = true;
+                        resolve(ruffleInstance);
+                    }
+                }, 50);
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    if (!ruffleReady) resolve(null);
+                }, 3000);
             });
+        }
+                 // Функция для синхронизации кадров (уменьшает ошибки WebGL)
+        function syncRuffleFrames() {
+            const canvas = document.querySelector('#ruffle-player canvas');
+            if (canvas && canvas.dispatchEvent) {
+                canvas.dispatchEvent(new Event('webglcontextrestored'));
+            }
+            setTimeout(syncRuffleFrames, 100);
         }
         
         initRuffle();
@@ -2074,7 +2215,6 @@
             `┌───────┐\n│ ███ █ │\n│ ███ █ │\n│ █████ │\n│ █████ │\n└───┬───┘\n    │`
         ];
         
-        // ===== ПЕРЕМЕННЫЕ =====
         let currentSort = localStorage.getItem('currentSort') || 'default';
         let currentGamePath = '';
         let currentGameName = '';
@@ -2091,8 +2231,9 @@
         
         let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
         let lastPlayed = JSON.parse(localStorage.getItem('lastPlayed') || 'null');
+
+        let isFirstGameLaunch = true;
         
-        // ===== ФУНКЦИИ ДЛЯ ИЗБРАННОГО И ИСТОРИИ =====
         function saveFavorites() {
             localStorage.setItem('favorites', JSON.stringify(favorites));
             updateFavoritesUI();
@@ -2207,7 +2348,6 @@
             });
         }
         
-        // ===== РЕЖИМ ПРОИЗВОДИТЕЛЬНОСТИ =====
         function setPerformanceMode(enabled) {
             if (enabled) {
                 document.body.classList.add('performance-mode');
@@ -2238,28 +2378,24 @@
         
         // ===== БАЗА ДАННЫХ ИГР =====
         const mainGamesData = [
-            // Douchebag (2 части)
             { id: "douchebag", name: "Douchebag", genre: "Симуляторы Серии игр", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", game: "games/Douchebag_1.swf", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!", hasParts: true,
               parts: [
                 { name: "Douchebag 1", game: "games/Douchebag_1.swf", bg: "prewiew/qVw9DPpxk8l57x-400-300.jpg", rating: 4.2, ratingText: "4.2/5", year: 2010, desc: "Стань самым крутым парнем в районе!" },
                 { name: "Douchebag 2", game: "games/Douchebag_2.swf", bg: "prewiew/maxresdefault.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение легендарной игры!" }
               ] 
             },
-            // Gun Mayhem (2 части)
             { id: "gunmayhem", name: "Gun Mayhem", genre: "Экшн На двоих Серии игр", bg: "prewiew/cover-1638866018644.avif", game: "games/gunmayhem.swf", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!", hasParts: true,
               parts: [
                 { name: "Gun Mayhem 1", game: "games/gunmayhem.swf", bg: "prewiew/cover-1638866018644.avif", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Динамичный шутер на двоих!" },
                 { name: "Gun Mayhem 2", game: "games/Gun Mayhem 2 More Mayhem.swf", bg: "prewiew/unnamed.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Вторая часть шутера!" }
               ] 
             },
-            // Cactus McCoy (2 части)
             { id: "cactusmccoy", name: "Cactus McCoy", genre: "Экшн Серии игр", bg: "prewiew/cactus_mccoy.webp", game: "games/564425_cactusmccoy.swf", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!", hasParts: true,
               parts: [
                 { name: "Cactus McCoy 1", game: "games/564425_cactusmccoy.swf", bg: "prewiew/cactus_mccoy.webp", rating: 4.6, ratingText: "4.6/5", year: 2011, desc: "Приключения кактуса-ковбоя!" },
                 { name: "Cactus McCoy 2", game: "games/581019_cactusmccoy2.swf", bg: "prewiew/1519403257_igra-draki-kaktus-makkoj-2.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Продолжение приключений!" }
               ] 
             },
-            // Feed Us (6 частей)
             { id: "feedus", name: "Feed Us", genre: "Аркада Серии игр", bg: "prewiew/feedus.jpg", game: "games/feedus.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Играй за пиранью!", hasParts: true,
               parts: [
                 { name: "Feed Us 1", game: "games/feedus.swf", bg: "prewiew/maxresdefault (1).jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Классическая первая часть." },
@@ -2270,7 +2406,6 @@
                 { name: "Feed Us Lost Island", game: "games/feedus-lostisland.swf", bg: "prewiew/images (2).jpg", rating: 4.6, ratingText: "4.6/5", year: 2013, desc: "Спин-офф серии!" }
               ] 
             },
-            // Sushi Cat (5 частей + катапульт)
             { id: "sushicat", name: "Sushi Cat", genre: "Аркада Серии игр", bg: "prewiew/sushicat.jpg", game: "games/SushiCat.swf", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Весёлая аркада про кота, который любит суши!", hasParts: true,
               parts: [
                 { name: "Sushi Cat 1", game: "games/SushiCat.swf", bg: "prewiew/sushicat.jpg", rating: 4.6, ratingText: "4.6/5", year: 2010, desc: "Классическая первая часть! Помоги коту собрать все суши." },
@@ -2280,15 +2415,13 @@
                 { name: "Sushi Catapult", game: "games/sushicatapult.swf", bg: "prewiew/sushicatapult.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Котопульт! Запускай кота из катапульты и собирай суши в воздухе." }
               ] 
             },
-            // Skywire (2 части)
             { id: "skywire", name: "Skywire", genre: "Аркада Серии игр", bg: "prewiew/skywire.jpg", game: "games/Skywire - A Free Game by Nitrome.swf", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Классическая аркада от Nitrome!", hasParts: true,
               parts: [
                 { name: "Skywire 1", game: "games/Skywire - A Free Game by Nitrome.swf", bg: "prewiew/skywire.jpg", rating: 4.4, ratingText: "4.4/5", year: 2010, desc: "Проведи вагонетку по опасным рельсам!" },
                 { name: "Skywire 2", game: "games/Skywire_2.swf", bg: "prewiew/skywire2.jpg", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Продолжение! Ещё более опасные рельсы!" }
               ] 
             },
-            // Water and Fire (4 части)
-            { id: "waterfire", name: "Water and Fire", genre: "Головоломка На двоих Серии игр", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/water_and_fire.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка про стихии.", hasParts: true,
+            { id: "waterfire", name: "Water and Fire", genre: "Головоломка На двоих Серии игр", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", game: "games/Fireboy & Watergirl1.swf", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Кооперативная головоломка про стихии.", hasParts: true,
               parts: [
                 { name: "Water and Fire 1", game: "games/Fireboy & Watergirl1.swf", bg: "prewiew/1609163734_fireboy-and-watergirl-forest-temple.jpeg", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Первая часть! Управляйте водой и огнём вместе." },
                 { name: "Water and Fire 2", game: "games/water_and_fire.swf", bg: "prewiew/images.jpg", rating: 4.5, ratingText: "4.5/5", year: 2013, desc: "Вторая часть головоломки!" },
@@ -2296,7 +2429,6 @@
                 { name: "Water and Fire 4", game: "games/FireBoyAndWaterGirl4_KONG.swf", bg: "prewiew/fireboywatergirl4.jpg", rating: 4.8, ratingText: "4.8/5", year: 2013, desc: "Четвёртая часть! Новые механики и кристаллы." }
               ] 
             },
-            // Bad Ice Cream (3 части)
             { id: "badicecream", name: "Bad Ice Cream", genre: "Аркада На двоих Серии игр", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", game: "games/Bad_Icecream.swf", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Весёлая аркада про мороженое!", hasParts: true,
               parts: [
                 { name: "Bad Ice Cream 1", game: "games/Bad_Icecream.swf", bg: "prewiew/Screenshot_234_16527281916282a17fa963c2.16213730.jpg", rating: 4.6, ratingText: "4.6/5", year: 2012, desc: "Классическая первая часть!" },
@@ -2304,7 +2436,6 @@
                 { name: "Bad Ice Cream 3", game: "games/bad_ice_cream_3.swf", bg: "prewiew/badicecream3.jpg", rating: 4.7, ratingText: "4.7/5", year: 2013, desc: "Третья часть! Ещё больше льда и веселья!" }
               ] 
             },
-            // Bomb It (4 части)
             { id: "bombit", name: "Bomb It", genre: "Аркада Экшн Серии игр", bg: "prewiew/bombit.jpg", game: "games/Bomb It 1.swf", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Динамичная аркада про бомбы!", hasParts: true,
               parts: [
                 { name: "Bomb It 1", game: "games/Bomb It 1.swf", bg: "prewiew/bombit1.jpg", rating: 4.4, ratingText: "4.4/5", year: 2009, desc: "Первая часть! Ставь бомбы и уничтожай врагов." },
@@ -2313,14 +2444,12 @@
                 { name: "Bomb It 4", game: "games/bombit4.swf", bg: "prewiew/bombit4.jpg", rating: 4.7, ratingText: "4.7/5", year: 2012, desc: "Четвёртая часть! Финальная битва." }
               ] 
             },
-            // Super Smash Flash (2 части)
             { id: "supersmashflash", name: "Super Smash Flash", genre: "Файтинг Экшн Серии игр", bg: "prewiew/supersmashflash.jpg", game: "games/Super Smash Flash.swf", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Фанатский кроссовер-файтинг!", hasParts: true,
               parts: [
                 { name: "Super Smash Flash 1", game: "games/Super Smash Flash.swf", bg: "prewiew/supersmashflash1.jpg", rating: 4.8, ratingText: "4.8/5", year: 2008, desc: "Первая часть! Битва персонажей из вселенной Nintendo." },
                 { name: "Super Smash Flash 2", game: "games/Super Smash Flash2.swf", bg: "prewiew/supersmashflash2.jpg", rating: 4.9, ratingText: "4.9/5", year: 2012, desc: "Вторая часть! Ещё больше персонажей и атак!" }
               ] 
             },
-            // Одиночные игры
             { id: "nitromemustdie", name: "Nitrome Must Die", genre: "Экшн", bg: "prewiew/nitromemustdie.jpg", game: "games/nitromemustdie.swf", rating: 4.5, ratingText: "4.5/5", year: 2011, desc: "Безумный экшн от Nitrome!" },
             { id: "mutantcat", name: "Mutant Fighting Cup 2016 - Cat Edition", genre: "Экшн На двоих", bg: "prewiew/mutantcat.jpg", game: "games/mutant-fighting-cup-2016-cat-edition.swf", rating: 4.3, ratingText: "4.3/5", year: 2016, desc: "Битвы мутантов-котов!" },
             { id: "zombotron", name: "Zombotron", genre: "Экшн", bg: "prewiew/zombotron.jpg", game: "games/575535_Zombotron.swf", rating: 4.7, ratingText: "4.7/5", year: 2010, desc: "Динамичный шутер про выживание на планете зомби." },
@@ -2378,7 +2507,6 @@
         
         const allGamesForWheel = [...mainGamesData, ...searchOnlyGames];
         
-        // ===== ФУНКЦИИ СОРТИРОВКИ =====
         function sortGames(games, sortType) {
             const sorted = [...games];
             switch(sortType) {
@@ -2432,7 +2560,6 @@
             return sortGames(filtered, currentSort);
         }
         
-        // ===== ОБНОВЛЕНИЕ ЧАСТИ ИГРЫ =====
         function updateGamePart(cardElement, gameData, partIndex) {
             const part = gameData.parts[partIndex];
             currentPartsSelection[gameData.id] = partIndex;
@@ -2506,7 +2633,6 @@
             }
         }
         
-        // ===== СОЗДАНИЕ КАРТОЧКИ =====
         function createGameCard(game) {
             const card = document.createElement('div');
             card.className = 'game-card';
@@ -2592,7 +2718,6 @@
             return card;
         }
         
-        // ===== ПАГИНАЦИЯ =====
         function updatePagination(totalGames) {
             const totalPages = Math.ceil(totalGames / itemsPerPage);
             const paginationDiv = document.getElementById('pagination');
@@ -2683,7 +2808,6 @@
             updateHistoryUI();
         }
         
-        // ===== НАСТРОЙКИ СЕТКИ =====
         const gridSlider = document.getElementById('gridSlider');
         const gridValue = document.getElementById('gridValue');
         const gamesGrid = document.getElementById('gamesGrid');
@@ -2709,7 +2833,6 @@
         setGridCols(defaultCols);
         gridSlider.value = defaultCols;
         
-        // ===== ОБРАБОТЧИКИ СОБЫТИЙ =====
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', async function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -2758,7 +2881,6 @@
             if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) searchDropdown.classList.remove('show');
         });
         
-        // ===== ФУНКЦИИ ДЛЯ ИГРЫ =====
         function showLoading() { 
             const loader = document.getElementById('loadingIndicator');
             loader.classList.add('visible');
@@ -2917,6 +3039,12 @@
             setTimeout(() => container.classList.add('active'), 100);
             document.body.style.overflow = 'hidden';
             
+            // Создаём ползунок громкости
+            if (gameId) {
+                createVolumeSlider(gameId);
+                updateVolumeForGame(gameId);
+            }
+            
             const ruffle = await initRuffle();
             if (!ruffle) {
                 hideLoading();
@@ -2928,11 +3056,56 @@
                 currentPlayer.style.width = '100%';
                 currentPlayer.style.height = '100%';
                 playerDiv.appendChild(currentPlayer);
+                
+                // Применяем сохранённую громкость
+                if (gameId) {
+                    const savedVolume = getVolumeSetting(gameId);
+                    setTimeout(() => {
+                        try {
+                            if (currentPlayer && currentPlayer.volume !== undefined) {
+                                currentPlayer.volume = savedVolume / 100;
+                            } else if (currentPlayer && currentPlayer.setVolume) {
+                                currentPlayer.setVolume(savedVolume / 100);
+                            }
+                            // Обновляем отображение ползунка
+                            const slider = document.querySelector('.volume-slider');
+                            const valueSpan = document.querySelector('.volume-value');
+                            if (slider) slider.value = savedVolume;
+                            if (valueSpan) valueSpan.textContent = savedVolume + '%';
+                        } catch(e) {}
+                    }, 500);
+                }
+
+                
+                // Настройка громкости после создания плеера
+                if (gameId) {
+                    const savedVolume = getVolumeSetting(gameId);
+                    try {
+                        if (currentPlayer.volume !== undefined) {
+                            currentPlayer.volume = savedVolume / 100;
+                        } else if (currentPlayer.setVolume) {
+                            currentPlayer.setVolume(savedVolume / 100);
+                        }
+                    } catch(e) {}
+                }
+                
                 const loadPromise = currentPlayer.load(gamePath);
                 currentLoadPromise = loadPromise;
                 await Promise.race([loadPromise, new Promise((_, reject) => setTimeout(() => reject(new Error('Таймаут')), 15000))]);
                 hideLoading();
                 currentLoadPromise = null;
+                
+                // КОСТЫЛЬ: перезагружаем Ruffle только при первом запуске
+                if (isFirstGameLaunch) {
+                    setTimeout(() => {
+                        reloadRuffleForWASD(gamePath, gameName);
+                    }, 1000);
+                }
+                
+                // Поддержка WASD на русской раскладке
+                setTimeout(() => {
+                    setupWASDSupport();
+                }, 500);
             } catch (error) {
                 console.error(error);
                 hideLoading();
@@ -2966,6 +3139,9 @@
                     currentPlayer = null;
                 }
                 currentLoadPromise = null;
+                // Удаляем ползунок громкости
+                const volumeSlider = document.querySelector('.volume-slider-container');
+                if (volumeSlider) volumeSlider.remove();
                 reloadSiteAfterGame();
             }, 300);
             document.body.style.overflow = 'auto';
@@ -3010,7 +3186,7 @@
             else btn.classList.remove('show');
         });
         
-        // ===== КОЛЕСО ФОРТУНЫ =====
+        // КОЛЕСО ФОРТУНЫ
         const wheelModal = document.getElementById('wheelModal');
         const wheelCanvas = document.getElementById('wheelCanvas');
         const ctx = wheelCanvas.getContext('2d');
@@ -3191,7 +3367,6 @@
             spinAnimationWheel = requestAnimationFrame(animateSpin);
         }
         
-        // ===== АДАПТАЦИЯ ИНТЕРФЕЙСА =====
         function adaptInterfaceToWindowSize() {
             document.querySelectorAll('.game-card.has-parts').forEach(card => {
                 const menu = card.querySelector('.game-parts-menu');
@@ -3224,7 +3399,6 @@
             }, 150);
         });
         
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
         const performanceToggle = document.getElementById('performanceToggle');
         performanceToggle.addEventListener('click', () => {
             setPerformanceMode(!performanceMode);
@@ -3267,6 +3441,64 @@
         setRandomAscii();
         initialRender();
         setTimeout(adaptInterfaceToWindowSize, 100);
+        // Костыль для WASD - принудительная перезагрузка обработчиков
+        function forceWASDReload() {
+            console.log('Force reload WASD handlers');
+            setupWASDSupport();
+            
+            // Дополнительно: эмулируем нажатие и отпускание всех клавиш для сброса состояния
+            const keys = ['w', 'a', 's', 'd'];
+            keys.forEach(key => {
+                const keyDownEvent = new KeyboardEvent('keydown', { key: key, bubbles: true });
+                const keyUpEvent = new KeyboardEvent('keyup', { key: key, bubbles: true });
+                const canvas = document.querySelector('#ruffle-player canvas');
+                if (canvas) {
+                    canvas.dispatchEvent(keyDownEvent);
+                    setTimeout(() => canvas.dispatchEvent(keyUpEvent), 50);
+                }
+            });
+        }
+        // Костыль: перезагрузка Ruffle для правильной работы WASD (только при первом запуске)
+        function reloadRuffleForWASD(gamePath, gameName) {
+            if (!isFirstGameLaunch) return;
+            
+            console.log('First game launch - reloading Ruffle for WASD fix');
+            isFirstGameLaunch = false;
+            
+            const container = document.getElementById('game-container');
+            const playerDiv = document.getElementById('ruffle-player');
+            
+            // Визуальный эффект мигания
+            container.style.opacity = '0.5';
+            
+            setTimeout(async () => {
+                try {
+                    const ruffle = await initRuffle();
+                    if (ruffle) {
+                        if (currentPlayer) {
+                            try { playerDiv.innerHTML = ''; } catch(e) {}
+                            currentPlayer = null;
+                        }
+                        
+                        currentPlayer = ruffle.createPlayer();
+                        currentPlayer.style.width = '100%';
+                        currentPlayer.style.height = '100%';
+                        playerDiv.appendChild(currentPlayer);
+                        
+                        await currentPlayer.load(gamePath);
+                        container.style.opacity = '1';
+                        
+                        // Настраиваем WASD после перезагрузки
+                        setTimeout(() => {
+                            setupWASDSupport();
+                        }, 500);
+                    }
+                } catch(e) {
+                    console.error('Reload failed:', e);
+                    container.style.opacity = '1';
+                }
+            }, 300);
+        }
     })();
 </script>
 
